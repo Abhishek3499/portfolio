@@ -25,6 +25,13 @@ class _PrimaryButtonState extends State<PrimaryButton> {
 
   @override
   Widget build(BuildContext context) {
+    final contentColor = widget.outlined
+        ? (_hovered ? AppColors.accent : AppColors.interactiveText)
+        : AppColors.onAccent;
+    final outlinedFill = _hovered
+        ? AppColors.interactiveSurface
+        : AppColors.surface.withValues(alpha: AppColors.isDark ? 0.04 : 0.72);
+
     return MouseRegion(
       cursor: SystemMouseCursors.click,
       onEnter: (_) => setState(() => _hovered = true),
@@ -38,6 +45,7 @@ class _PrimaryButtonState extends State<PrimaryButton> {
             vertical: AppSpacing.md,
           ),
           decoration: BoxDecoration(
+            color: widget.outlined ? outlinedFill : null,
             gradient: widget.outlined
                 ? null
                 : (_hovered
@@ -66,13 +74,13 @@ class _PrimaryButtonState extends State<PrimaryButton> {
             mainAxisSize: MainAxisSize.min,
             children: [
               if (widget.icon != null) ...[
-                Icon(widget.icon, size: 16, color: Colors.white),
+                Icon(widget.icon, size: 16, color: contentColor),
                 const SizedBox(width: AppSpacing.sm),
               ],
               Text(
                 widget.label,
-                style: const TextStyle(
-                  color: Colors.white,
+                style: TextStyle(
+                  color: contentColor,
                   fontSize: 14,
                   fontWeight: FontWeight.w600,
                   letterSpacing: 0.3,

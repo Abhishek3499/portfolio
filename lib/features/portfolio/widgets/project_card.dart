@@ -69,7 +69,7 @@ class _ProjectCardState extends State<ProjectCard> {
                   Expanded(
                     child: Text(
                       widget.project.title,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w700,
                         color: AppColors.textPrimary,
@@ -86,7 +86,7 @@ class _ProjectCardState extends State<ProjectCard> {
                 children: [
                   Text(
                     widget.project.description,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 14,
                       color: AppColors.textSecondary,
                       height: 1.65,
@@ -101,7 +101,7 @@ class _ProjectCardState extends State<ProjectCard> {
                           Container(
                             width: 5,
                             height: 5,
-                            decoration: const BoxDecoration(
+                            decoration: BoxDecoration(
                               color: AppColors.accentSecondary,
                               shape: BoxShape.circle,
                             ),
@@ -109,7 +109,7 @@ class _ProjectCardState extends State<ProjectCard> {
                           const SizedBox(width: AppSpacing.sm),
                           Text(
                             f,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 13,
                               color: AppColors.textSecondary,
                             ),
@@ -171,7 +171,7 @@ class _TechTag extends StatelessWidget {
       ),
       child: Text(
         label,
-        style: const TextStyle(
+        style: TextStyle(
           fontSize: 11,
           color: AppColors.accent,
           fontWeight: FontWeight.w500,
@@ -204,6 +204,10 @@ class _ActionButtonState extends State<_ActionButton> {
 
   @override
   Widget build(BuildContext context) {
+    final contentColor = widget.filled
+        ? AppColors.onAccent
+        : (_hovered ? AppColors.accent : AppColors.interactiveText);
+
     return MouseRegion(
       cursor: SystemMouseCursors.click,
       onEnter: (_) => setState(() => _hovered = true),
@@ -216,9 +220,11 @@ class _ActionButtonState extends State<_ActionButton> {
           decoration: BoxDecoration(
             color: widget.filled
                 ? (_hovered
-                    ? AppColors.accent
-                    : AppColors.accent.withValues(alpha: 0.85))
-                : (_hovered ? AppColors.borderLight : Colors.transparent),
+                      ? AppColors.accent
+                      : AppColors.accent.withValues(alpha: 0.85))
+                : (_hovered
+                      ? AppColors.interactiveSurface
+                      : Colors.transparent),
             borderRadius: BorderRadius.circular(AppSpacing.radiusSm),
             border: Border.all(
               color: widget.filled ? Colors.transparent : AppColors.borderLight,
@@ -227,13 +233,13 @@ class _ActionButtonState extends State<_ActionButton> {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(widget.icon, size: 14, color: Colors.white),
+              Icon(widget.icon, size: 14, color: contentColor),
               const SizedBox(width: 6),
               Text(
                 widget.label,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 13,
-                  color: Colors.white,
+                  color: contentColor,
                   fontWeight: FontWeight.w500,
                 ),
               ),

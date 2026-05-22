@@ -21,7 +21,7 @@ class FooterSection extends StatelessWidget {
 
     return Container(
       width: double.infinity,
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         color: AppColors.surface,
         border: Border(top: BorderSide(color: AppColors.border, width: 1)),
       ),
@@ -31,7 +31,9 @@ class FooterSection extends StatelessWidget {
       ),
       child: Center(
         child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: AppSpacing.maxContentWidth),
+          constraints: const BoxConstraints(
+            maxWidth: AppSpacing.maxContentWidth,
+          ),
           child: isMobile
               ? Column(
                   children: [
@@ -166,7 +168,7 @@ class _Copyright extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Text(
+    return Text(
       AppStrings.footerText,
       style: TextStyle(fontSize: 12, color: AppColors.textMuted),
     );

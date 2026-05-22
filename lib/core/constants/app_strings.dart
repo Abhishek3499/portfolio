@@ -27,5 +27,6 @@ class AppStrings {
   static const String github = 'https://github.com/dashboard';
   static const String whatsapp = 'https://wa.me/918679314185';
 
-  static const String footerText = '© 2025 Abhishek Sharma. Crafted with Flutter.';
+  static const String footerText =
+      'Turning ideas into beautiful Flutter experiences.';
 }

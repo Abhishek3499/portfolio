@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_spacing.dart';
+import '../../../core/theme/theme_controller.dart';
 import '../../../core/widgets/primary_button.dart';
 import '../../../responsive/responsive.dart';
 
-class NavBar extends StatefulWidget {
+class NavBar extends ConsumerStatefulWidget {
   final ScrollController scrollController;
   final List<GlobalKey> sectionKeys;
 
@@ -16,10 +18,10 @@ class NavBar extends StatefulWidget {
   });
 
   @override
-  State<NavBar> createState() => _NavBarState();
+  ConsumerState<NavBar> createState() => _NavBarState();
 }
 
-class _NavBarState extends State<NavBar> {
+class _NavBarState extends ConsumerState<NavBar> {
   bool _scrolled = false;
 
   @override
@@ -33,17 +35,29 @@ class _NavBarState extends State<NavBar> {
     if (scrolled != _scrolled) setState(() => _scrolled = scrolled);
   }
 
+  @override
+  void dispose() {
+    widget.scrollController.removeListener(_onScroll);
+    super.dispose();
+  }
+
   void _scrollTo(GlobalKey key) {
     final ctx = key.currentContext;
     if (ctx != null) {
-      Scrollable.ensureVisible(ctx,
-          duration: const Duration(milliseconds: 600), curve: Curves.easeInOutCubic);
+      Scrollable.ensureVisible(
+        ctx,
+        duration: const Duration(milliseconds: 600),
+        curve: Curves.easeInOutCubic,
+      );
     }
   }
 
   @override
   Widget build(BuildContext context) {
     final isMobile = Responsive.isMobile(context);
+    final themeMode = ref.watch(themeModeProvider);
+    final isDark = themeMode == ThemeMode.dark;
+
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
       height: AppSpacing.navHeight,
@@ -52,15 +66,24 @@ class _NavBarState extends State<NavBar> {
             ? AppColors.surface.withValues(alpha: 0.92)
             : Colors.transparent,
         border: _scrolled
-            ? const Border(bottom: BorderSide(color: AppColors.border, width: 1))
+            ? Border(bottom: BorderSide(color: AppColors.border, width: 1))
             : null,
         boxShadow: _scrolled
-            ? [BoxShadow(color: Colors.black.withValues(alpha: 0.3), blurRadius: 20)]
+            ? [
+                BoxShadow(
+                  color: AppColors.isDark
+                      ? Colors.black.withValues(alpha: 0.3)
+                      : AppColors.accent.withValues(alpha: 0.08),
+                  blurRadius: 20,
+                ),
+              ]
             : null,
       ),
       child: Center(
         child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: AppSpacing.maxContentWidth),
+          constraints: const BoxConstraints(
+            maxWidth: AppSpacing.maxContentWidth,
+          ),
           child: Padding(
             padding: EdgeInsets.symmetric(
               horizontal: isMobile ? AppSpacing.lg : AppSpacing.xl,
@@ -68,7 +91,8 @@ class _NavBarState extends State<NavBar> {
             child: Row(
               children: [
                 ShaderMask(
-                  shaderCallback: (b) => AppColors.accentGradient.createShader(b),
+                  shaderCallback: (b) =>
+                      AppColors.accentGradient.createShader(b),
                   blendMode: BlendMode.srcIn,
                   child: Text(
                     'AS.',
@@ -84,16 +108,30 @@ class _NavBarState extends State<NavBar> {
                   _NavLink('About', () => _scrollTo(widget.sectionKeys[0])),
                   _NavLink('Skills', () => _scrollTo(widget.sectionKeys[1])),
                   _NavLink('Projects', () => _scrollTo(widget.sectionKeys[2])),
-                  _NavLink('Experience', () => _scrollTo(widget.sectionKeys[3])),
+                  _NavLink(
+                    'Experience',
+                    () => _scrollTo(widget.sectionKeys[3]),
+                  ),
+                  const SizedBox(width: AppSpacing.md),
+                  _ThemeToggle(isDark: isDark, onChanged: _setThemeMode),
                   const SizedBox(width: AppSpacing.md),
                   PrimaryButton(
                     label: 'Contact',
                     onTap: () => _scrollTo(widget.sectionKeys[4]),
                   ),
                 ] else
-                  IconButton(
-                    icon: const Icon(Icons.menu_rounded, color: AppColors.textPrimary),
-                    onPressed: () => _showMobileMenu(context),
+                  Row(
+                    children: [
+                      _ThemeToggle(isDark: isDark, onChanged: _setThemeMode),
+                      const SizedBox(width: AppSpacing.sm),
+                      IconButton(
+                        icon: Icon(
+                          Icons.menu_rounded,
+                          color: AppColors.textPrimary,
+                        ),
+                        onPressed: () => _showMobileMenu(context),
+                      ),
+                    ],
                   ),
               ],
             ),
@@ -103,12 +141,20 @@ class _NavBarState extends State<NavBar> {
     );
   }
 
+  void _setThemeMode(bool isDark) {
+    ref.read(themeModeProvider.notifier).state = isDark
+        ? ThemeMode.dark
+        : ThemeMode.light;
+  }
+
   void _showMobileMenu(BuildContext context) {
     showModalBottomSheet(
       context: context,
       backgroundColor: AppColors.surface,
       shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(AppSpacing.radiusXl)),
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(AppSpacing.radiusXl),
+        ),
       ),
       builder: (_) => Padding(
         padding: const EdgeInsets.all(AppSpacing.xl),
@@ -124,26 +170,90 @@ class _NavBarState extends State<NavBar> {
               ),
             ),
             const SizedBox(height: AppSpacing.xl),
-            ...['About', 'Skills', 'Projects', 'Experience', 'Contact']
-                .asMap()
-                .entries
-                .map(
-                  (e) => ListTile(
-                    title: Text(
-                      e.value,
-                      style: const TextStyle(
-                        color: AppColors.textPrimary,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    onTap: () {
-                      Navigator.pop(context);
-                      _scrollTo(widget.sectionKeys[e.key]);
-                    },
+            ...[
+              'About',
+              'Skills',
+              'Projects',
+              'Experience',
+              'Contact',
+            ].asMap().entries.map(
+              (e) => ListTile(
+                title: Text(
+                  e.value,
+                  style: TextStyle(
+                    color: AppColors.textPrimary,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
+                onTap: () {
+                  Navigator.pop(context);
+                  _scrollTo(widget.sectionKeys[e.key]);
+                },
+              ),
+            ),
             const SizedBox(height: AppSpacing.md),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class _ThemeToggle extends StatelessWidget {
+  final bool isDark;
+  final ValueChanged<bool> onChanged;
+
+  const _ThemeToggle({required this.isDark, required this.onChanged});
+
+  @override
+  Widget build(BuildContext context) {
+    return Tooltip(
+      message: isDark ? 'Switch to light mode' : 'Switch to dark mode',
+      child: InkWell(
+        borderRadius: BorderRadius.circular(100),
+        onTap: () => onChanged(!isDark),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 220),
+          width: 58,
+          height: 32,
+          padding: const EdgeInsets.all(4),
+          decoration: BoxDecoration(
+            gradient: AppColors.toggleTrackGradient,
+            borderRadius: BorderRadius.circular(100),
+            border: Border.all(color: AppColors.border),
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.accent.withValues(alpha: isDark ? 0.18 : 0.12),
+                blurRadius: 14,
+                offset: const Offset(0, 4),
+              ),
+            ],
+          ),
+          child: AnimatedAlign(
+            duration: const Duration(milliseconds: 220),
+            curve: Curves.easeOutCubic,
+            alignment: isDark ? Alignment.centerRight : Alignment.centerLeft,
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 220),
+              width: 24,
+              height: 24,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: isDark
+                      ? const [Color(0xFF6366F1), Color(0xFF06B6D4)]
+                      : const [Color(0xFFFFB703), Color(0xFFFB7185)],
+                ),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                isDark ? Icons.dark_mode_rounded : Icons.light_mode_rounded,
+                color: AppColors.onAccent,
+                size: 15,
+              ),
+            ),
+          ),
         ),
       ),
     );

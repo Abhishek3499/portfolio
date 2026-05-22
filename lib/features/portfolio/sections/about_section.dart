@@ -21,10 +21,7 @@ class AboutSection extends StatelessWidget {
           const SectionTitle(
             title: AppStrings.aboutTitle,
             subtitle: 'Passionate about building things that matter.',
-          )
-              .animate()
-              .fadeIn(duration: 600.ms)
-              .slideX(begin: -0.1, end: 0),
+          ).animate().fadeIn(duration: 600.ms).slideX(begin: -0.1, end: 0),
           const SizedBox(height: AppSpacing.xxl),
           isMobile
               ? Column(
@@ -52,67 +49,67 @@ class _BioCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GlassCard(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                width: 56,
-                height: 56,
-                decoration: BoxDecoration(
-                  gradient: AppColors.accentGradient,
-                  borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
-                ),
-                child: const Center(
-                  child: Text(
-                    'AS',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w800,
-                      fontSize: 18,
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(width: AppSpacing.md),
-              const Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              Row(
                 children: [
-                  Text(
-                    AppStrings.name,
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700,
-                      color: AppColors.textPrimary,
+                  Container(
+                    width: 56,
+                    height: 56,
+                    decoration: BoxDecoration(
+                      gradient: AppColors.accentGradient,
+                      borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
+                    ),
+                    child: const Center(
+                      child: Text(
+                        'AS',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w800,
+                          fontSize: 18,
+                        ),
+                      ),
                     ),
                   ),
-                  SizedBox(height: 2),
-                  Text(
-                    AppStrings.role,
-                    style: TextStyle(
-                      fontSize: 13,
-                      color: AppColors.accentSecondary,
-                    ),
+                  const SizedBox(width: AppSpacing.md),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        AppStrings.name,
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.textPrimary,
+                        ),
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        AppStrings.role,
+                        style: TextStyle(
+                          fontSize: 13,
+                          color: AppColors.accentSecondary,
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
+              const SizedBox(height: AppSpacing.xl),
+              Text(
+                AppStrings.aboutBio,
+                style: TextStyle(
+                  fontSize: 15,
+                  color: AppColors.textSecondary,
+                  height: 1.8,
+                ),
+              ),
+              const SizedBox(height: AppSpacing.xl),
+              const _SpecializationChips(),
             ],
           ),
-          const SizedBox(height: AppSpacing.xl),
-          const Text(
-            AppStrings.aboutBio,
-            style: TextStyle(
-              fontSize: 15,
-              color: AppColors.textSecondary,
-              height: 1.8,
-            ),
-          ),
-          const SizedBox(height: AppSpacing.xl),
-          const _SpecializationChips(),
-        ],
-      ),
-    )
+        )
         .animate()
         .fadeIn(delay: 200.ms, duration: 600.ms)
         .slideY(begin: 0.1, end: 0);
@@ -147,7 +144,7 @@ class _SpecializationChips extends StatelessWidget {
               ),
               child: Text(
                 s,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 12,
                   color: AppColors.accentSecondary,
                   fontWeight: FontWeight.w500,
@@ -183,39 +180,40 @@ class _HighlightsGrid extends StatelessWidget {
           .asMap()
           .entries
           .map(
-            (e) => GlassCard(
-              padding: const EdgeInsets.all(AppSpacing.md),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(e.value.icon, color: AppColors.accent, size: 22),
-                  const SizedBox(height: AppSpacing.sm),
-                  Text(
-                    e.value.value,
-                    style: const TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.w800,
-                      color: AppColors.textPrimary,
+            (e) =>
+                GlassCard(
+                      padding: const EdgeInsets.all(AppSpacing.md),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(e.value.icon, color: AppColors.accent, size: 22),
+                          const SizedBox(height: AppSpacing.sm),
+                          Text(
+                            e.value.value,
+                            style: TextStyle(
+                              fontSize: 22,
+                              fontWeight: FontWeight.w800,
+                              color: AppColors.textPrimary,
+                            ),
+                          ),
+                          const SizedBox(height: 2),
+                          Text(
+                            e.value.label,
+                            style: TextStyle(
+                              fontSize: 11,
+                              color: AppColors.textMuted,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ),
+                    )
+                    .animate()
+                    .fadeIn(delay: (300 + e.key * 100).ms, duration: 500.ms)
+                    .scale(
+                      begin: const Offset(0.9, 0.9),
+                      end: const Offset(1, 1),
                     ),
-                  ),
-                  const SizedBox(height: 2),
-                  Text(
-                    e.value.label,
-                    style: const TextStyle(
-                      fontSize: 11,
-                      color: AppColors.textMuted,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
-            )
-                .animate()
-                .fadeIn(delay: (300 + e.key * 100).ms, duration: 500.ms)
-                .scale(
-                  begin: const Offset(0.9, 0.9),
-                  end: const Offset(1, 1),
-                ),
           )
           .toList(),
     );
@@ -245,7 +243,9 @@ class _SectionWrapper extends StatelessWidget {
       ),
       child: Center(
         child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: AppSpacing.maxContentWidth),
+          constraints: const BoxConstraints(
+            maxWidth: AppSpacing.maxContentWidth,
+          ),
           child: child,
         ),
       ),

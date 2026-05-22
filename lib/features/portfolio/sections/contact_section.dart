@@ -44,14 +44,11 @@ class ContactSection extends StatelessWidget {
                   letterSpacing: -0.5,
                 ),
                 textAlign: TextAlign.center,
-              )
-                  .animate()
-                  .fadeIn(duration: 600.ms)
-                  .slideY(begin: 0.2, end: 0),
+              ).animate().fadeIn(duration: 600.ms).slideY(begin: 0.2, end: 0),
               const SizedBox(height: AppSpacing.md),
               Text(
                 AppStrings.contactSubtitle,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 16,
                   color: AppColors.textSecondary,
                   height: 1.6,
@@ -60,51 +57,53 @@ class ContactSection extends StatelessWidget {
               ).animate().fadeIn(delay: 150.ms, duration: 600.ms),
               const SizedBox(height: AppSpacing.xxl),
               GlassCard(
-                child: Row(
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.all(AppSpacing.md),
-                      decoration: BoxDecoration(
-                        color: AppColors.accent.withValues(alpha: 0.12),
-                        borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
-                      ),
-                      child: const Icon(
-                        Icons.email_outlined,
-                        color: AppColors.accent,
-                        size: 22,
-                      ),
-                    ),
-                    const SizedBox(width: AppSpacing.md),
-                    const Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Email me directly',
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
-                              color: AppColors.textPrimary,
+                    child: Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(AppSpacing.md),
+                          decoration: BoxDecoration(
+                            color: AppColors.accent.withValues(alpha: 0.12),
+                            borderRadius: BorderRadius.circular(
+                              AppSpacing.radiusMd,
                             ),
                           ),
-                          SizedBox(height: 2),
-                          Text(
-                            AppStrings.email,
-                            style: TextStyle(
-                              fontSize: 13,
-                              color: AppColors.textSecondary,
-                            ),
+                          child: Icon(
+                            Icons.email_outlined,
+                            color: AppColors.accent,
+                            size: 22,
                           ),
-                        ],
-                      ),
+                        ),
+                        const SizedBox(width: AppSpacing.md),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Email me directly',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600,
+                                  color: AppColors.textPrimary,
+                                ),
+                              ),
+                              const SizedBox(height: 2),
+                              Text(
+                                AppStrings.email,
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  color: AppColors.textSecondary,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        PrimaryButton(
+                          label: 'Send Email',
+                          onTap: () => _launch('mailto:${AppStrings.email}'),
+                        ),
+                      ],
                     ),
-                    PrimaryButton(
-                      label: 'Send Email',
-                      onTap: () => _launch('mailto:${AppStrings.email}'),
-                    ),
-                  ],
-                ),
-              )
+                  )
                   .animate()
                   .fadeIn(delay: 250.ms, duration: 600.ms)
                   .slideY(begin: 0.1, end: 0),

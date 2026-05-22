@@ -25,8 +25,10 @@ class HeroSection extends StatelessWidget {
 
     return Container(
       width: double.infinity,
-      constraints: BoxConstraints(minHeight: MediaQuery.of(context).size.height),
-      decoration: const BoxDecoration(gradient: AppColors.heroGradient),
+      constraints: BoxConstraints(
+        minHeight: MediaQuery.of(context).size.height,
+      ),
+      decoration: BoxDecoration(gradient: AppColors.heroGradient),
       child: Stack(
         children: [
           Positioned(
@@ -47,7 +49,9 @@ class HeroSection extends StatelessWidget {
           ),
           Center(
             child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: AppSpacing.maxContentWidth),
+              constraints: const BoxConstraints(
+                maxWidth: AppSpacing.maxContentWidth,
+              ),
               child: Padding(
                 padding: EdgeInsets.symmetric(
                   horizontal: isMobile ? AppSpacing.lg : AppSpacing.xl,
@@ -57,22 +61,24 @@ class HeroSection extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(height: isMobile ? AppSpacing.xxxl : AppSpacing.xxl),
+                    SizedBox(
+                      height: isMobile ? AppSpacing.xxxl : AppSpacing.xxl,
+                    ),
                     _Badge()
                         .animate()
                         .fadeIn(delay: 200.ms, duration: 600.ms)
                         .slideY(begin: 0.3, end: 0),
                     const SizedBox(height: AppSpacing.xl),
                     Text(
-                      AppStrings.name,
-                      style: GoogleFonts.sora(
-                        fontSize: isMobile ? 36 : (isTablet ? 52 : 68),
-                        fontWeight: FontWeight.w800,
-                        color: AppColors.textPrimary,
-                        height: 1.05,
-                        letterSpacing: -2,
-                      ),
-                    )
+                          AppStrings.name,
+                          style: GoogleFonts.sora(
+                            fontSize: isMobile ? 36 : (isTablet ? 52 : 68),
+                            fontWeight: FontWeight.w800,
+                            color: AppColors.textPrimary,
+                            height: 1.05,
+                            letterSpacing: -2,
+                          ),
+                        )
                         .animate()
                         .fadeIn(delay: 350.ms, duration: 700.ms)
                         .slideY(begin: 0.3, end: 0),
@@ -87,36 +93,36 @@ class HeroSection extends StatelessWidget {
                     ).animate().fadeIn(delay: 500.ms, duration: 700.ms),
                     const SizedBox(height: AppSpacing.xl),
                     ConstrainedBox(
-                      constraints: const BoxConstraints(maxWidth: 560),
-                      child: Text(
-                        AppStrings.tagline,
-                        style: TextStyle(
-                          fontSize: isMobile ? 15 : 17,
-                          color: AppColors.textSecondary,
-                          height: 1.75,
-                        ),
-                      ),
-                    )
+                          constraints: const BoxConstraints(maxWidth: 560),
+                          child: Text(
+                            AppStrings.tagline,
+                            style: TextStyle(
+                              fontSize: isMobile ? 15 : 17,
+                              color: AppColors.textSecondary,
+                              height: 1.75,
+                            ),
+                          ),
+                        )
                         .animate()
                         .fadeIn(delay: 650.ms, duration: 700.ms)
                         .slideY(begin: 0.2, end: 0),
                     const SizedBox(height: AppSpacing.xxl),
                     Wrap(
-                      spacing: AppSpacing.md,
-                      runSpacing: AppSpacing.md,
-                      children: [
-                        PrimaryButton(
-                          label: AppStrings.heroCta,
-                          onTap: onViewWork,
-                          icon: Icons.arrow_downward_rounded,
-                        ),
-                        PrimaryButton(
-                          label: AppStrings.heroCtaSecondary,
-                          onTap: onContact,
-                          outlined: true,
-                        ),
-                      ],
-                    )
+                          spacing: AppSpacing.md,
+                          runSpacing: AppSpacing.md,
+                          children: [
+                            PrimaryButton(
+                              label: AppStrings.heroCta,
+                              onTap: onViewWork,
+                              icon: Icons.arrow_downward_rounded,
+                            ),
+                            PrimaryButton(
+                              label: AppStrings.heroCtaSecondary,
+                              onTap: onContact,
+                              outlined: true,
+                            ),
+                          ],
+                        )
                         .animate()
                         .fadeIn(delay: 800.ms, duration: 700.ms)
                         .slideY(begin: 0.2, end: 0),
@@ -125,9 +131,19 @@ class HeroSection extends StatelessWidget {
                         .animate(onPlay: (c) => c.repeat())
                         .fadeIn(delay: 1200.ms)
                         .then()
-                        .moveY(begin: 0, end: 8, duration: 900.ms, curve: Curves.easeInOut)
+                        .moveY(
+                          begin: 0,
+                          end: 8,
+                          duration: 900.ms,
+                          curve: Curves.easeInOut,
+                        )
                         .then()
-                        .moveY(begin: 8, end: 0, duration: 900.ms, curve: Curves.easeInOut),
+                        .moveY(
+                          begin: 8,
+                          end: 0,
+                          duration: 900.ms,
+                          curve: Curves.easeInOut,
+                        ),
                   ],
                 ),
               ),
@@ -171,13 +187,13 @@ class _Badge extends StatelessWidget {
           Container(
             width: 7,
             height: 7,
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               color: AppColors.accentSecondary,
               shape: BoxShape.circle,
             ),
           ),
           const SizedBox(width: 8),
-          const Text(
+          Text(
             'Available for opportunities',
             style: TextStyle(
               fontSize: 12,
@@ -197,15 +213,19 @@ class _ScrollIndicator extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const Text(
+        Text(
           'Scroll to explore',
-          style: TextStyle(fontSize: 11, color: AppColors.textMuted, letterSpacing: 1),
+          style: TextStyle(
+            fontSize: 11,
+            color: AppColors.textMuted,
+            letterSpacing: 1,
+          ),
         ),
         const SizedBox(height: 8),
         Container(
           width: 1,
           height: 40,
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
