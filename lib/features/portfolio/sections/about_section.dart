@@ -4,6 +4,7 @@ import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_spacing.dart';
 import '../../../core/constants/app_strings.dart';
 import '../../../core/widgets/glass_card.dart';
+import '../../../core/widgets/premium_effects.dart';
 import '../../../core/widgets/section_title.dart';
 import '../../../responsive/responsive.dart';
 
@@ -18,10 +19,13 @@ class AboutSection extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SectionTitle(
+          const ScrollReveal(
+            slideBegin: Offset(-0.06, 0),
+            child: SectionTitle(
             title: AppStrings.aboutTitle,
             subtitle: 'Passionate about building things that matter.',
-          ).animate().fadeIn(duration: 600.ms).slideX(begin: -0.1, end: 0),
+            ),
+          ),
           const SizedBox(height: AppSpacing.xxl),
           isMobile
               ? Column(
@@ -48,7 +52,8 @@ class AboutSection extends StatelessWidget {
 class _BioCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return GlassCard(
+    return PremiumHover(
+      child: GlassCard(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -109,7 +114,8 @@ class _BioCard extends StatelessWidget {
               const _SpecializationChips(),
             ],
           ),
-        )
+        ),
+    )
         .animate()
         .fadeIn(delay: 200.ms, duration: 600.ms)
         .slideY(begin: 0.1, end: 0);
@@ -181,7 +187,9 @@ class _HighlightsGrid extends StatelessWidget {
           .entries
           .map(
             (e) =>
-                GlassCard(
+                PremiumHover(
+                  lift: 4,
+                  child: GlassCard(
                       padding: const EdgeInsets.all(AppSpacing.md),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -207,7 +215,8 @@ class _HighlightsGrid extends StatelessWidget {
                           ),
                         ],
                       ),
-                    )
+                    ),
+                )
                     .animate()
                     .fadeIn(delay: (300 + e.key * 100).ms, duration: 500.ms)
                     .scale(
@@ -234,9 +243,9 @@ class _SectionWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isMobile = Responsive.isMobile(context);
-    return Container(
+    return PremiumBackground(
+      child: Container(
       width: double.infinity,
-      color: AppColors.background,
       padding: EdgeInsets.symmetric(
         vertical: AppSpacing.section,
         horizontal: isMobile ? AppSpacing.lg : AppSpacing.xl,
@@ -248,6 +257,7 @@ class _SectionWrapper extends StatelessWidget {
           ),
           child: child,
         ),
+      ),
       ),
     );
   }

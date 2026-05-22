@@ -5,6 +5,7 @@ import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_spacing.dart';
 import '../../../core/constants/app_strings.dart';
 import '../../../core/widgets/glass_card.dart';
+import '../../../core/widgets/premium_effects.dart';
 import '../../../core/widgets/section_title.dart';
 import '../../../responsive/responsive.dart';
 import '../controllers/portfolio_controller.dart';
@@ -18,9 +19,10 @@ class ExperienceSection extends ConsumerWidget {
     final experiences = ref.watch(portfolioProvider).experiences;
     final isMobile = Responsive.isMobile(context);
 
-    return Container(
+    return PremiumBackground(
+      surface: true,
+      child: Container(
       width: double.infinity,
-      color: AppColors.surface,
       padding: EdgeInsets.symmetric(
         vertical: AppSpacing.section,
         horizontal: isMobile ? AppSpacing.lg : AppSpacing.xl,
@@ -33,24 +35,29 @@ class ExperienceSection extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SectionTitle(
-                title: AppStrings.experienceTitle,
-                subtitle: 'My journey and credentials.',
-              ).animate().fadeIn(duration: 600.ms).slideX(begin: -0.1, end: 0),
+              const ScrollReveal(
+                slideBegin: Offset(-0.06, 0),
+                child: SectionTitle(
+                  title: AppStrings.experienceTitle,
+                  subtitle: 'My journey and credentials.',
+                ),
+              ),
               const SizedBox(height: AppSpacing.xxl),
               ...experiences.asMap().entries.map(
                 (e) =>
-                    _ExperienceItem(
+                    ScrollReveal(
+                      delay: (e.key * 120).ms,
+                      slideBegin: const Offset(-0.04, 0.04),
+                      child: _ExperienceItem(
                           experience: e.value,
                           isLast: e.key == experiences.length - 1,
-                        )
-                        .animate()
-                        .fadeIn(delay: (e.key * 150).ms, duration: 600.ms)
-                        .slideX(begin: -0.05, end: 0),
+                        ),
+                    ),
               ),
             ],
           ),
         ),
+      ),
       ),
     );
   }
@@ -103,25 +110,42 @@ class _ExperienceItem extends StatelessWidget {
                   width: iconSize,
                   height: iconSize,
                   decoration: BoxDecoration(
-                    color: _color.withValues(alpha: 0.12),
-                    borderRadius: BorderRadius.circular(AppSpacing.radiusSm),
+                    color: _color.withValues(alpha: 0.14),
+                    shape: BoxShape.circle,
                     border: Border.all(color: _color.withValues(alpha: 0.3)),
+                    boxShadow: [
+                      BoxShadow(
+                        color: _color.withValues(alpha: 0.22),
+                        blurRadius: 18,
+                      ),
+                    ],
                   ),
                   child: Icon(_icon, color: _color, size: isMobile ? 16 : 18),
                 ),
                 if (!isLast)
                   Container(
-                    width: 1,
+                    width: 2,
                     height: isMobile ? 210 : 170,
                     margin: const EdgeInsets.symmetric(vertical: 4),
-                    color: AppColors.border,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          _color.withValues(alpha: 0.7),
+                          AppColors.border.withValues(alpha: 0.2),
+                        ],
+                      ),
+                    ),
                   ),
               ],
             ),
           ),
           SizedBox(width: gap),
           Expanded(
-            child: GlassCard(
+            child: PremiumHover(
+              lift: 4,
+              child: GlassCard(
               padding: EdgeInsets.all(isMobile ? AppSpacing.md : AppSpacing.lg),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -151,6 +175,7 @@ class _ExperienceItem extends StatelessWidget {
                     ),
                   ),
                 ],
+              ),
               ),
             ),
           ),

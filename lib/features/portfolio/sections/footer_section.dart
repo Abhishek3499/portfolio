@@ -24,35 +24,54 @@ class FooterSection extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.surface,
         border: Border(top: BorderSide(color: AppColors.border, width: 1)),
-      ),
-      padding: EdgeInsets.symmetric(
-        vertical: AppSpacing.xl,
-        horizontal: isMobile ? AppSpacing.lg : AppSpacing.xl,
-      ),
-      child: Center(
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(
-            maxWidth: AppSpacing.maxContentWidth,
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.accent.withValues(alpha: 0.08),
+            blurRadius: 26,
+            offset: const Offset(0, -8),
           ),
-          child: isMobile
-              ? Column(
-                  children: [
-                    _Logo(),
-                    const SizedBox(height: AppSpacing.lg),
-                    _SocialRow(onLaunch: _launch),
-                    const SizedBox(height: AppSpacing.lg),
-                    const _Copyright(),
-                  ],
-                )
-              : Row(
-                  children: [
-                    _Logo(),
-                    const Spacer(),
-                    _SocialRow(onLaunch: _launch),
-                    const Spacer(),
-                    const _Copyright(),
-                  ],
-                ),
+        ],
+      ),
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          border: Border(
+            top: BorderSide(
+              width: 2,
+              color: AppColors.accent.withValues(alpha: 0.2),
+            ),
+          ),
+        ),
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+            vertical: AppSpacing.xl,
+            horizontal: isMobile ? AppSpacing.lg : AppSpacing.xl,
+          ),
+          child: Center(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(
+                maxWidth: AppSpacing.maxContentWidth,
+              ),
+              child: isMobile
+                  ? Column(
+                      children: [
+                        _Logo(),
+                        const SizedBox(height: AppSpacing.lg),
+                        _SocialRow(onLaunch: _launch),
+                        const SizedBox(height: AppSpacing.lg),
+                        const _Copyright(),
+                      ],
+                    )
+                  : Row(
+                      children: [
+                        _Logo(),
+                        const Spacer(),
+                        _SocialRow(onLaunch: _launch),
+                        const Spacer(),
+                        const _Copyright(),
+                      ],
+                    ),
+            ),
+          ),
         ),
       ),
     );
@@ -137,26 +156,39 @@ class _FooterIconState extends State<_FooterIcon> {
       onExit: (_) => setState(() => _hovered = false),
       child: GestureDetector(
         onTap: widget.onTap,
-        child: AnimatedContainer(
+        child: AnimatedScale(
+          scale: _hovered ? 1.12 : 1,
           duration: const Duration(milliseconds: 180),
-          padding: const EdgeInsets.all(AppSpacing.sm),
-          decoration: BoxDecoration(
-            color: _hovered
-                ? AppColors.accent.withValues(alpha: 0.12)
-                : Colors.transparent,
-            borderRadius: BorderRadius.circular(AppSpacing.radiusSm),
+          curve: Curves.easeOutCubic,
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 180),
+            padding: const EdgeInsets.all(AppSpacing.sm),
+            decoration: BoxDecoration(
+              color: _hovered
+                  ? AppColors.accent.withValues(alpha: 0.12)
+                  : Colors.transparent,
+              borderRadius: BorderRadius.circular(AppSpacing.radiusSm),
+              boxShadow: _hovered
+                  ? [
+                      BoxShadow(
+                        color: AppColors.accent.withValues(alpha: 0.18),
+                        blurRadius: 14,
+                      ),
+                    ]
+                  : null,
+            ),
+            child: widget.isMaterial
+                ? Icon(
+                    widget.icon as IconData,
+                    size: 18,
+                    color: _hovered ? AppColors.accent : AppColors.textMuted,
+                  )
+                : FaIcon(
+                    widget.icon as IconData,
+                    size: 16,
+                    color: _hovered ? AppColors.accent : AppColors.textMuted,
+                  ),
           ),
-          child: widget.isMaterial
-              ? Icon(
-                  widget.icon as IconData,
-                  size: 18,
-                  color: _hovered ? AppColors.accent : AppColors.textMuted,
-                )
-              : FaIcon(
-                  widget.icon as IconData,
-                  size: 16,
-                  color: _hovered ? AppColors.accent : AppColors.textMuted,
-                ),
         ),
       ),
     );

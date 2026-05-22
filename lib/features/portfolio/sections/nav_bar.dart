@@ -4,17 +4,20 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_spacing.dart';
 import '../../../core/theme/theme_controller.dart';
+import '../../../core/widgets/premium_effects.dart';
 import '../../../core/widgets/primary_button.dart';
 import '../../../responsive/responsive.dart';
 
 class NavBar extends ConsumerStatefulWidget {
   final ScrollController scrollController;
   final List<GlobalKey> sectionKeys;
+  final int activeIndex;
 
   const NavBar({
     super.key,
     required this.scrollController,
     required this.sectionKeys,
+    required this.activeIndex,
   });
 
   @override
@@ -105,19 +108,35 @@ class _NavBarState extends ConsumerState<NavBar> {
                 ),
                 const Spacer(),
                 if (!isMobile) ...[
-                  _NavLink('About', () => _scrollTo(widget.sectionKeys[0])),
-                  _NavLink('Skills', () => _scrollTo(widget.sectionKeys[1])),
-                  _NavLink('Projects', () => _scrollTo(widget.sectionKeys[2])),
+                  _NavLink(
+                    'About',
+                    active: widget.activeIndex == 1,
+                    onTap: () => _scrollTo(widget.sectionKeys[1]),
+                  ),
+                  _NavLink(
+                    'Skills',
+                    active: widget.activeIndex == 2,
+                    onTap: () => _scrollTo(widget.sectionKeys[2]),
+                  ),
+                  _NavLink(
+                    'Projects',
+                    active: widget.activeIndex == 3,
+                    onTap: () => _scrollTo(widget.sectionKeys[3]),
+                  ),
                   _NavLink(
                     'Experience',
-                    () => _scrollTo(widget.sectionKeys[3]),
+                    active: widget.activeIndex == 4,
+                    onTap: () => _scrollTo(widget.sectionKeys[4]),
                   ),
                   const SizedBox(width: AppSpacing.md),
                   _ThemeToggle(isDark: isDark, onChanged: _setThemeMode),
                   const SizedBox(width: AppSpacing.md),
-                  PrimaryButton(
-                    label: 'Contact',
-                    onTap: () => _scrollTo(widget.sectionKeys[4]),
+                  PremiumHover(
+                    lift: 3,
+                    child: PrimaryButton(
+                      label: 'Contact',
+                      onTap: () => _scrollTo(widget.sectionKeys[5]),
+                    ),
                   ),
                 ] else
                   Row(
@@ -187,7 +206,7 @@ class _NavBarState extends ConsumerState<NavBar> {
                 ),
                 onTap: () {
                   Navigator.pop(context);
-                  _scrollTo(widget.sectionKeys[e.key]);
+                  _scrollTo(widget.sectionKeys[e.key + 1]);
                 },
               ),
             ),
@@ -209,11 +228,11 @@ class _ThemeToggle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Tooltip(
       message: isDark ? 'Switch to light mode' : 'Switch to dark mode',
-      child: InkWell(
-        borderRadius: BorderRadius.circular(100),
+      child: GestureDetector(
         onTap: () => onChanged(!isDark),
         child: AnimatedContainer(
-          duration: const Duration(milliseconds: 220),
+          duration: const Duration(milliseconds: 320),
+          curve: Curves.easeOutCubic,
           width: 58,
           height: 32,
           padding: const EdgeInsets.all(4),
@@ -230,11 +249,12 @@ class _ThemeToggle extends StatelessWidget {
             ],
           ),
           child: AnimatedAlign(
-            duration: const Duration(milliseconds: 220),
+            duration: const Duration(milliseconds: 320),
             curve: Curves.easeOutCubic,
             alignment: isDark ? Alignment.centerRight : Alignment.centerLeft,
             child: AnimatedContainer(
-              duration: const Duration(milliseconds: 220),
+              duration: const Duration(milliseconds: 320),
+              curve: Curves.easeOutCubic,
               width: 24,
               height: 24,
               decoration: BoxDecoration(
@@ -262,8 +282,14 @@ class _ThemeToggle extends StatelessWidget {
 
 class _NavLink extends StatefulWidget {
   final String label;
+  final bool active;
   final VoidCallback onTap;
-  const _NavLink(this.label, this.onTap);
+
+  const _NavLink(
+    this.label, {
+    required this.active,
+    required this.onTap,
+  });
 
   @override
   State<_NavLink> createState() => _NavLinkState();
@@ -274,6 +300,7 @@ class _NavLinkState extends State<_NavLink> {
 
   @override
   Widget build(BuildContext context) {
+    final isActive = widget.active || _hovered;
     return MouseRegion(
       cursor: SystemMouseCursors.click,
       onEnter: (_) => setState(() => _hovered = true),
@@ -281,15 +308,61 @@ class _NavLinkState extends State<_NavLink> {
       child: GestureDetector(
         onTap: widget.onTap,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
-          child: AnimatedDefaultTextStyle(
-            duration: const Duration(milliseconds: 150),
-            style: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w500,
-              color: _hovered ? AppColors.textPrimary : AppColors.textSecondary,
+          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm),
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 220),
+            curve: Curves.easeOutCubic,
+            padding: const EdgeInsets.symmetric(
+              horizontal: AppSpacing.sm,
+              vertical: AppSpacing.sm,
             ),
-            child: Text(widget.label),
+            decoration: BoxDecoration(
+              color: widget.active
+                  ? AppColors.accent.withValues(alpha: 0.08)
+                  : Colors.transparent,
+              borderRadius: BorderRadius.circular(100),
+              boxShadow: widget.active
+                  ? [
+                      BoxShadow(
+                        color: AppColors.accent.withValues(alpha: 0.18),
+                        blurRadius: 18,
+                      ),
+                    ]
+                  : null,
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                AnimatedDefaultTextStyle(
+                  duration: const Duration(milliseconds: 180),
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: widget.active ? FontWeight.w700 : FontWeight.w500,
+                    color: isActive
+                        ? AppColors.textPrimary
+                        : AppColors.textSecondary,
+                  ),
+                  child: Text(widget.label),
+                ),
+                const SizedBox(height: 4),
+                AnimatedContainer(
+                  duration: const Duration(milliseconds: 220),
+                  curve: Curves.easeOutCubic,
+                  width: widget.active ? 24 : (_hovered ? 14 : 0),
+                  height: 2,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(2),
+                    gradient: AppColors.accentGradient,
+                    boxShadow: [
+                      BoxShadow(
+                        color: AppColors.accent.withValues(alpha: 0.5),
+                        blurRadius: 8,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

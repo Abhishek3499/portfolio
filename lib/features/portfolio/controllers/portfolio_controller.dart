@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import '../models/experience_model.dart';
 import '../models/project_model.dart';
 import '../models/skill_model.dart';
-import '../models/experience_model.dart';
 
 final portfolioProvider = Provider<PortfolioController>((ref) {
   return PortfolioController();
@@ -18,18 +18,25 @@ final scrollControllerProvider = Provider<ScrollController>((ref) {
 class PortfolioController {
   final List<ProjectModel> projects = const [
     ProjectModel(
-      title: 'Sports App',
+      title: 'Gruve — Short Video Social Platform',
       description:
-          'A feature-rich sports companion app with live scores, match schedules, team stats, and personalized notifications for sports enthusiasts.',
-      techTags: ['Flutter', 'Dart', 'REST API', 'Riverpod', 'Firebase'],
+          'A modern short-video social media application inspired by TikTok and Instagram Reels, featuring immersive vertical scrolling, smooth animations, responsive UI, and engaging social interactions built with Flutter.',
+      techTags: [
+        'Flutter',
+        'Riverpod',
+        'Firebase',
+        'REST API',
+        'Video Player',
+        'Clean Architecture',
+      ],
       features: [
-        'Live score updates',
-        'Team & player stats',
-        'Push notifications',
-        'Favorites & bookmarks',
+        'Immersive vertical reels feed',
+        'Smooth video interactions',
+        'Responsive social UI',
+        'Clean scalable architecture',
       ],
       githubUrl: 'https://github.com/dashboard',
-      emoji: '⚽',
+      emoji: 'Play',
     ),
     ProjectModel(
       title: 'Auth Module',
@@ -43,7 +50,7 @@ class PortfolioController {
         'Clean Architecture',
       ],
       githubUrl: 'https://github.com/dashboard',
-      emoji: '🔐',
+      emoji: 'Lock',
     ),
     ProjectModel(
       title: 'Real-time Chat App',
@@ -57,7 +64,7 @@ class PortfolioController {
         'Online presence',
       ],
       githubUrl: 'https://github.com/dashboard',
-      emoji: '💬',
+      emoji: 'Chat',
     ),
   ];
 

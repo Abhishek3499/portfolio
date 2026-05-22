@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_spacing.dart';
+import '../../../core/widgets/premium_effects.dart';
 import '../models/project_model.dart';
 
 class ProjectCard extends StatefulWidget {
@@ -15,6 +16,7 @@ class ProjectCard extends StatefulWidget {
 
 class _ProjectCardState extends State<ProjectCard> {
   bool _hovered = false;
+  bool _pressed = false;
 
   Future<void> _launch(String url) async {
     final uri = Uri.parse(url);
@@ -25,58 +27,80 @@ class _ProjectCardState extends State<ProjectCard> {
   Widget build(BuildContext context) {
     return MouseRegion(
       onEnter: (_) => setState(() => _hovered = true),
-      onExit: (_) => setState(() => _hovered = false),
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 250),
-        transform: Matrix4.translationValues(0, _hovered ? -4 : 0, 0),
-        decoration: BoxDecoration(
-          gradient: AppColors.cardGradient,
-          borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
-          border: Border.all(
-            color: _hovered
-                ? AppColors.accent.withValues(alpha: 0.4)
-                : AppColors.border,
-            width: 1,
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: _hovered
-                  ? AppColors.accent.withValues(alpha: 0.12)
-                  : Colors.black.withValues(alpha: 0.2),
-              blurRadius: _hovered ? 32 : 16,
-              offset: const Offset(0, 8),
-            ),
-          ],
-        ),
+      onExit: (_) => setState(() {
+        _hovered = false;
+        _pressed = false;
+      }),
+      child: GestureDetector(
+        onTapDown: (_) => setState(() => _pressed = true),
+        onTapCancel: () => setState(() => _pressed = false),
+        onTapUp: (_) => setState(() => _pressed = false),
+        child: AnimatedScale(
+          scale: _pressed ? 0.985 : (_hovered ? 1.015 : 1),
+          duration: const Duration(milliseconds: 180),
+          curve: Curves.easeOutCubic,
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 280),
+            curve: Curves.easeOutCubic,
+            transform: Matrix4.translationValues(0, _hovered ? -8 : 0, 0),
+            child: GradientBorder(
+              active: _hovered,
+              borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
+              child: Container(
+                decoration: BoxDecoration(
+                  gradient: AppColors.cardGradient,
+                  borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
+                  boxShadow: [
+                    BoxShadow(
+                      color: _hovered
+                          ? AppColors.accent.withValues(alpha: 0.2)
+                          : Colors.black.withValues(alpha: 0.16),
+                      blurRadius: _hovered ? 36 : 16,
+                      offset: const Offset(0, 12),
+                    ),
+                  ],
+                ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              padding: const EdgeInsets.all(AppSpacing.lg),
-              decoration: BoxDecoration(
-                color: AppColors.accentGlow,
-                borderRadius: const BorderRadius.vertical(
-                  top: Radius.circular(AppSpacing.radiusLg),
-                ),
+            ClipRRect(
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(AppSpacing.radiusLg),
               ),
-              child: Row(
-                children: [
-                  Text(
-                    widget.project.emoji,
-                    style: const TextStyle(fontSize: 32),
-                  ),
-                  const SizedBox(width: AppSpacing.md),
-                  Expanded(
-                    child: Text(
-                      widget.project.title,
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.textPrimary,
-                      ),
+              child: AnimatedScale(
+                scale: _hovered ? 1.04 : 1,
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.easeOutCubic,
+                child: Container(
+                  padding: const EdgeInsets.all(AppSpacing.lg),
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        AppColors.accent.withValues(alpha: _hovered ? 0.18 : 0.11),
+                        AppColors.accentSecondary.withValues(alpha: _hovered ? 0.13 : 0.06),
+                      ],
                     ),
                   ),
-                ],
+                  child: Row(
+                    children: [
+                      Text(
+                        widget.project.emoji,
+                        style: const TextStyle(fontSize: 32),
+                      ),
+                      const SizedBox(width: AppSpacing.md),
+                      Expanded(
+                        child: Text(
+                          widget.project.title,
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w700,
+                            color: AppColors.textPrimary,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ),
             Padding(
@@ -138,10 +162,12 @@ class _ProjectCardState extends State<ProjectCard> {
                       if (widget.project.liveUrl != null) ...[
                         const SizedBox(width: AppSpacing.sm),
                         _ActionButton(
-                          label: 'Live Demo',
+                          label: 'View Project',
                           icon: Icons.open_in_new_rounded,
                           filled: true,
-                          onTap: () => _launch(widget.project.liveUrl!),
+                          onTap: () => _launch(
+                            widget.project.githubUrl ?? widget.project.liveUrl!,
+                          ),
                         ),
                       ],
                     ],
@@ -150,6 +176,10 @@ class _ProjectCardState extends State<ProjectCard> {
               ),
             ),
           ],
+        ),
+              ),
+            ),
+          ),
         ),
       ),
     );
