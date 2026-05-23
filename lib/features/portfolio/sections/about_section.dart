@@ -14,6 +14,9 @@ class AboutSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isMobile = Responsive.isMobile(context);
+    final sectionGap = Responsive.isSmallPhone(context)
+        ? AppSpacing.xl
+        : AppSpacing.xxl;
 
     return _SectionWrapper(
       child: Column(
@@ -26,7 +29,7 @@ class AboutSection extends StatelessWidget {
             subtitle: 'Passionate about building things that matter.',
             ),
           ),
-          const SizedBox(height: AppSpacing.xxl),
+          SizedBox(height: sectionGap),
           isMobile
               ? Column(
                   children: [
@@ -78,26 +81,30 @@ class _BioCard extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: AppSpacing.md),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        AppStrings.name,
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w700,
-                          color: AppColors.textPrimary,
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          AppStrings.name,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: Responsive.isSmallPhone(context) ? 14 : 16,
+                            fontWeight: FontWeight.w700,
+                            color: AppColors.textPrimary,
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 2),
-                      Text(
-                        AppStrings.role,
-                        style: TextStyle(
-                          fontSize: 13,
-                          color: AppColors.accentSecondary,
+                        const SizedBox(height: 2),
+                        Text(
+                          AppStrings.role,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: Responsive.isSmallPhone(context) ? 12 : 13,
+                            color: AppColors.accentSecondary,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ],
               ),
@@ -242,13 +249,12 @@ class _SectionWrapper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isMobile = Responsive.isMobile(context);
     return PremiumBackground(
       child: Container(
       width: double.infinity,
       padding: EdgeInsets.symmetric(
-        vertical: AppSpacing.section,
-        horizontal: isMobile ? AppSpacing.lg : AppSpacing.xl,
+        vertical: Responsive.sectionPadding(context),
+        horizontal: Responsive.horizontalPadding(context),
       ),
       child: Center(
         child: ConstrainedBox(

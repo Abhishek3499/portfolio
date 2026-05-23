@@ -17,15 +17,14 @@ class ExperienceSection extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final experiences = ref.watch(portfolioProvider).experiences;
-    final isMobile = Responsive.isMobile(context);
 
     return PremiumBackground(
       surface: true,
       child: Container(
       width: double.infinity,
       padding: EdgeInsets.symmetric(
-        vertical: AppSpacing.section,
-        horizontal: isMobile ? AppSpacing.lg : AppSpacing.xl,
+        vertical: Responsive.sectionPadding(context),
+        horizontal: Responsive.horizontalPadding(context),
       ),
       child: Center(
         child: ConstrainedBox(
@@ -42,7 +41,11 @@ class ExperienceSection extends ConsumerWidget {
                   subtitle: 'My journey and credentials.',
                 ),
               ),
-              const SizedBox(height: AppSpacing.xxl),
+              SizedBox(
+                height: Responsive.isSmallPhone(context)
+                    ? AppSpacing.xl
+                    : AppSpacing.xxl,
+              ),
               ...experiences.asMap().entries.map(
                 (e) =>
                     ScrollReveal(
@@ -94,8 +97,11 @@ class _ExperienceItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isMobile = Responsive.isMobile(context);
-    final iconSize = isMobile ? 34.0 : 40.0;
-    final gap = isMobile ? AppSpacing.md : AppSpacing.lg;
+    final isSmallPhone = Responsive.isSmallPhone(context);
+    final iconSize = isSmallPhone ? 30.0 : (isMobile ? 34.0 : 40.0);
+    final gap = isSmallPhone
+        ? AppSpacing.sm
+        : (isMobile ? AppSpacing.md : AppSpacing.lg);
 
     return Padding(
       padding: EdgeInsets.only(bottom: isLast ? 0 : AppSpacing.lg),
@@ -125,7 +131,7 @@ class _ExperienceItem extends StatelessWidget {
                 if (!isLast)
                   Container(
                     width: 2,
-                    height: isMobile ? 210 : 170,
+                    height: isSmallPhone ? 230 : (isMobile ? 210 : 170),
                     margin: const EdgeInsets.symmetric(vertical: 4),
                     decoration: BoxDecoration(
                       gradient: LinearGradient(

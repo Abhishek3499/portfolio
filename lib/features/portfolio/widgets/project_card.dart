@@ -3,6 +3,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_spacing.dart';
 import '../../../core/widgets/premium_effects.dart';
+import '../../../responsive/responsive.dart';
 import '../models/project_model.dart';
 
 class ProjectCard extends StatefulWidget {
@@ -25,6 +26,9 @@ class _ProjectCardState extends State<ProjectCard> {
 
   @override
   Widget build(BuildContext context) {
+    final isSmallPhone = Responsive.isSmallPhone(context);
+    final cardPadding = isSmallPhone ? AppSpacing.md : AppSpacing.lg;
+
     return MouseRegion(
       onEnter: (_) => setState(() => _hovered = true),
       onExit: (_) => setState(() {
@@ -72,7 +76,7 @@ class _ProjectCardState extends State<ProjectCard> {
                 duration: const Duration(milliseconds: 300),
                 curve: Curves.easeOutCubic,
                 child: Container(
-                  padding: const EdgeInsets.all(AppSpacing.lg),
+                  padding: EdgeInsets.all(cardPadding),
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       colors: [
@@ -87,12 +91,12 @@ class _ProjectCardState extends State<ProjectCard> {
                         widget.project.emoji,
                         style: const TextStyle(fontSize: 32),
                       ),
-                      const SizedBox(width: AppSpacing.md),
+                          SizedBox(width: isSmallPhone ? AppSpacing.sm : AppSpacing.md),
                       Expanded(
                         child: Text(
                           widget.project.title,
                           style: TextStyle(
-                            fontSize: 18,
+                            fontSize: isSmallPhone ? 16 : 18,
                             fontWeight: FontWeight.w700,
                             color: AppColors.textPrimary,
                           ),
@@ -104,14 +108,14 @@ class _ProjectCardState extends State<ProjectCard> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(AppSpacing.lg),
+              padding: EdgeInsets.all(cardPadding),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     widget.project.description,
                     style: TextStyle(
-                      fontSize: 14,
+                      fontSize: isSmallPhone ? 13 : 14,
                       color: AppColors.textSecondary,
                       height: 1.65,
                     ),
@@ -131,11 +135,13 @@ class _ProjectCardState extends State<ProjectCard> {
                             ),
                           ),
                           const SizedBox(width: AppSpacing.sm),
-                          Text(
-                            f,
-                            style: TextStyle(
-                              fontSize: 13,
-                              color: AppColors.textSecondary,
+                          Expanded(
+                            child: Text(
+                              f,
+                              style: TextStyle(
+                                fontSize: isSmallPhone ? 12 : 13,
+                                color: AppColors.textSecondary,
+                              ),
                             ),
                           ),
                         ],
@@ -151,7 +157,9 @@ class _ProjectCardState extends State<ProjectCard> {
                         .toList(),
                   ),
                   const SizedBox(height: AppSpacing.lg),
-                  Row(
+                  Wrap(
+                    spacing: AppSpacing.sm,
+                    runSpacing: AppSpacing.sm,
                     children: [
                       if (widget.project.githubUrl != null)
                         _ActionButton(
@@ -159,8 +167,7 @@ class _ProjectCardState extends State<ProjectCard> {
                           icon: Icons.code_rounded,
                           onTap: () => _launch(widget.project.githubUrl!),
                         ),
-                      if (widget.project.liveUrl != null) ...[
-                        const SizedBox(width: AppSpacing.sm),
+                      if (widget.project.liveUrl != null)
                         _ActionButton(
                           label: 'View Project',
                           icon: Icons.open_in_new_rounded,
@@ -169,7 +176,6 @@ class _ProjectCardState extends State<ProjectCard> {
                             widget.project.githubUrl ?? widget.project.liveUrl!,
                           ),
                         ),
-                      ],
                     ],
                   ),
                 ],

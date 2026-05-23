@@ -260,12 +260,12 @@ class _PremiumCursorLayerState extends State<PremiumCursorLayer> {
           children: [
             widget.child,
             if (_inside)
-              IgnorePointer(
-                child: AnimatedPositioned(
-                  duration: const Duration(milliseconds: 90),
-                  curve: Curves.easeOutCubic,
-                  left: _position.dx - (_pressed ? 24 : 18),
-                  top: _position.dy - (_pressed ? 24 : 18),
+              AnimatedPositioned(
+                duration: const Duration(milliseconds: 90),
+                curve: Curves.easeOutCubic,
+                left: _position.dx - (_pressed ? 24 : 18),
+                top: _position.dy - (_pressed ? 24 : 18),
+                child: IgnorePointer(
                   child: AnimatedContainer(
                     duration: const Duration(milliseconds: 160),
                     width: _pressed ? 48 : 36,
@@ -286,10 +286,10 @@ class _PremiumCursorLayerState extends State<PremiumCursorLayer> {
                 ),
               ),
             if (_inside)
-              IgnorePointer(
-                child: Positioned(
-                  left: _position.dx - 3,
-                  top: _position.dy - 3,
+              Positioned(
+                left: _position.dx - 3,
+                top: _position.dy - 3,
+                child: IgnorePointer(
                   child: Container(
                     width: 6,
                     height: 6,

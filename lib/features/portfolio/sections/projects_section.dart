@@ -21,13 +21,16 @@ class ProjectsSection extends ConsumerWidget {
     final projects = ref.watch(portfolioProvider).projects;
     final isMobile = Responsive.isMobile(context);
     final isTablet = Responsive.isTablet(context);
+    final sectionGap = Responsive.isSmallPhone(context)
+        ? AppSpacing.xl
+        : AppSpacing.xxl;
 
     return PremiumBackground(
       child: Container(
         width: double.infinity,
         padding: EdgeInsets.symmetric(
-          vertical: AppSpacing.section,
-          horizontal: isMobile ? AppSpacing.lg : AppSpacing.xl,
+          vertical: Responsive.sectionPadding(context),
+          horizontal: Responsive.horizontalPadding(context),
         ),
         child: Center(
           child: ConstrainedBox(
@@ -44,9 +47,9 @@ class ProjectsSection extends ConsumerWidget {
                     subtitle: 'A selection of things I\'ve built.',
                   ),
                 ),
-                const SizedBox(height: AppSpacing.xxl),
+                SizedBox(height: sectionGap),
                 FeaturedProject(project: projects.first),
-                const SizedBox(height: AppSpacing.xxl),
+                SizedBox(height: sectionGap),
                 if (isMobile)
                   Column(
                     children: projects
@@ -89,7 +92,7 @@ class _DesktopProjectGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (_, constraints) {
-        final cols = isTablet ? 2 : 3;
+        final cols = isTablet || Responsive.isCompactDesktop(context) ? 2 : 3;
         final itemWidth =
             (constraints.maxWidth - (AppSpacing.lg * (cols - 1))) / cols;
         return Wrap(
@@ -122,11 +125,14 @@ class FeaturedProject extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isMobile = Responsive.isMobile(context);
+    final isSmallPhone = Responsive.isSmallPhone(context);
     return GradientBorder(
       active: true,
       borderRadius: BorderRadius.circular(AppSpacing.radiusXl),
       child: Container(
-        padding: EdgeInsets.all(isMobile ? AppSpacing.lg : AppSpacing.xl),
+        padding: EdgeInsets.all(
+          isSmallPhone ? AppSpacing.md : (isMobile ? AppSpacing.lg : AppSpacing.xl),
+        ),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(AppSpacing.radiusXl),
           gradient: LinearGradient(
@@ -154,7 +160,7 @@ class FeaturedProject extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _FeaturedCopy(project: project),
-                  const SizedBox(height: AppSpacing.xl),
+                  SizedBox(height: isSmallPhone ? AppSpacing.lg : AppSpacing.xl),
                   _DeviceMockup(project: project),
                 ],
               )
@@ -200,7 +206,9 @@ class _FeaturedCopy extends StatelessWidget {
           project.title,
           style: TextStyle(
             color: AppColors.textPrimary,
-            fontSize: Responsive.isMobile(context) ? 28 : 38,
+            fontSize: Responsive.isSmallPhone(context)
+                ? 24
+                : (Responsive.isMobile(context) ? 28 : 38),
             fontWeight: FontWeight.w800,
             height: 1.12,
           ),
@@ -275,7 +283,7 @@ class _DeviceMockup extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AspectRatio(
-      aspectRatio: 1.15,
+      aspectRatio: Responsive.isSmallPhone(context) ? 0.92 : 1.15,
       child: Stack(
         alignment: Alignment.center,
         children: [
@@ -292,8 +300,12 @@ class _DeviceMockup extends StatelessWidget {
             ),
           ),
           Container(
-                width: Responsive.isMobile(context) ? 220 : 260,
-                height: Responsive.isMobile(context) ? 330 : 380,
+                width: Responsive.isSmallPhone(context)
+                    ? 190
+                    : (Responsive.isMobile(context) ? 220 : 260),
+                height: Responsive.isSmallPhone(context)
+                    ? 285
+                    : (Responsive.isMobile(context) ? 330 : 380),
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
                   color: AppColors.textPrimary.withValues(alpha: 0.09),

@@ -22,13 +22,14 @@ class ContactSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isMobile = Responsive.isMobile(context);
+    final isSmallPhone = Responsive.isSmallPhone(context);
 
     return PremiumBackground(
       child: Container(
       width: double.infinity,
       padding: EdgeInsets.symmetric(
-        vertical: AppSpacing.section,
-        horizontal: isMobile ? AppSpacing.lg : AppSpacing.xl,
+        vertical: Responsive.sectionPadding(context),
+        horizontal: Responsive.horizontalPadding(context),
       ),
       child: Center(
         child: ConstrainedBox(
@@ -38,7 +39,7 @@ class ContactSection extends StatelessWidget {
               Text(
                 AppStrings.contactTitle,
                 style: GoogleFonts.sora(
-                  fontSize: isMobile ? 28 : 40,
+                  fontSize: isSmallPhone ? 24 : (isMobile ? 28 : 40),
                   fontWeight: FontWeight.w700,
                   color: AppColors.textPrimary,
                   height: 1.2,
@@ -50,7 +51,7 @@ class ContactSection extends StatelessWidget {
               Text(
                 AppStrings.contactSubtitle,
                 style: TextStyle(
-                  fontSize: 16,
+                  fontSize: isSmallPhone ? 14 : 16,
                   color: AppColors.textSecondary,
                   height: 1.6,
                 ),
@@ -60,52 +61,28 @@ class ContactSection extends StatelessWidget {
               PremiumHover(
                 lift: 5,
                 child: GlassCard(
-                    child: Row(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.all(AppSpacing.md),
-                          decoration: BoxDecoration(
-                            color: AppColors.accent.withValues(alpha: 0.12),
-                            borderRadius: BorderRadius.circular(
-                              AppSpacing.radiusMd,
-                            ),
-                          ),
-                          child: Icon(
-                            Icons.email_outlined,
-                            color: AppColors.accent,
-                            size: 22,
-                          ),
-                        ),
-                        const SizedBox(width: AppSpacing.md),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                    child: isMobile
+                        ? Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
-                              Text(
-                                'Email me directly',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w600,
-                                  color: AppColors.textPrimary,
-                                ),
+                              const _EmailCopy(),
+                              const SizedBox(height: AppSpacing.md),
+                              PrimaryButton(
+                                label: 'Send Email',
+                                onTap: () => _launch('mailto:${AppStrings.email}'),
                               ),
-                              const SizedBox(height: 2),
-                              Text(
-                                AppStrings.email,
-                                style: TextStyle(
-                                  fontSize: 13,
-                                  color: AppColors.textSecondary,
-                                ),
+                            ],
+                          )
+                        : Row(
+                            children: [
+                              const _EmailCopy(expanded: true),
+                              const SizedBox(width: AppSpacing.md),
+                              PrimaryButton(
+                                label: 'Send Email',
+                                onTap: () => _launch('mailto:${AppStrings.email}'),
                               ),
                             ],
                           ),
-                        ),
-                        PrimaryButton(
-                          label: 'Send Email',
-                          onTap: () => _launch('mailto:${AppStrings.email}'),
-                        ),
-                      ],
-                    ),
                   ),
               )
                   .animate()
@@ -144,6 +121,59 @@ class ContactSection extends StatelessWidget {
       ),
       ),
     );
+  }
+}
+
+class _EmailCopy extends StatelessWidget {
+  final bool expanded;
+
+  const _EmailCopy({this.expanded = false});
+
+  @override
+  Widget build(BuildContext context) {
+    final content = Row(
+      children: [
+        Container(
+          padding: const EdgeInsets.all(AppSpacing.md),
+          decoration: BoxDecoration(
+            color: AppColors.accent.withValues(alpha: 0.12),
+            borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
+          ),
+          child: Icon(
+            Icons.email_outlined,
+            color: AppColors.accent,
+            size: 22,
+          ),
+        ),
+        const SizedBox(width: AppSpacing.md),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Email me directly',
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.textPrimary,
+                ),
+              ),
+              const SizedBox(height: 2),
+              Text(
+                AppStrings.email,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  fontSize: Responsive.isSmallPhone(context) ? 12 : 13,
+                  color: AppColors.textSecondary,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+
+    return expanded ? Expanded(child: content) : content;
   }
 }
 

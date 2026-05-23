@@ -1,16 +1,45 @@
 import 'package:flutter/material.dart';
 
 class Responsive {
+  static double width(BuildContext context) => MediaQuery.sizeOf(context).width;
+
+  static bool isTinyPhone(BuildContext context) => width(context) < 360;
+
+  static bool isSmallPhone(BuildContext context) => width(context) < 430;
+
   static bool isMobile(BuildContext context) =>
-      MediaQuery.of(context).size.width < 768;
+      width(context) < 768;
 
   static bool isTablet(BuildContext context) {
-    final w = MediaQuery.of(context).size.width;
+    final w = width(context);
     return w >= 768 && w < 1100;
   }
 
   static bool isDesktop(BuildContext context) =>
-      MediaQuery.of(context).size.width >= 1100;
+      width(context) >= 1100;
+
+  static bool isCompactDesktop(BuildContext context) {
+    final w = width(context);
+    return w >= 1100 && w < 1280;
+  }
+
+  static double horizontalPadding(BuildContext context) {
+    final w = width(context);
+    if (w < 360) return 14;
+    if (w < 430) return 16;
+    if (w < 768) return 20;
+    if (w < 1280) return 28;
+    return 32;
+  }
+
+  static double sectionPadding(BuildContext context) {
+    final w = width(context);
+    if (w < 360) return 54;
+    if (w < 430) return 62;
+    if (w < 768) return 72;
+    if (w < 1100) return 84;
+    return 96;
+  }
 
   static double value(
     BuildContext context, {

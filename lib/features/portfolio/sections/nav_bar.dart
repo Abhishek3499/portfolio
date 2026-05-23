@@ -89,7 +89,7 @@ class _NavBarState extends ConsumerState<NavBar> {
           ),
           child: Padding(
             padding: EdgeInsets.symmetric(
-              horizontal: isMobile ? AppSpacing.lg : AppSpacing.xl,
+              horizontal: Responsive.horizontalPadding(context),
             ),
             child: Row(
               children: [

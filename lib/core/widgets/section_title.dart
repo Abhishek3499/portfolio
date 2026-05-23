@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../constants/app_colors.dart';
 import '../constants/app_spacing.dart';
+import '../../responsive/responsive.dart';
 
 class SectionTitle extends StatelessWidget {
   final String title;
@@ -11,6 +12,7 @@ class SectionTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isSmallPhone = Responsive.isSmallPhone(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -25,13 +27,17 @@ class SectionTitle extends StatelessWidget {
               ),
             ),
             const SizedBox(width: AppSpacing.md),
-            Text(
-              title,
-              style: GoogleFonts.sora(
-                fontSize: 32,
-                fontWeight: FontWeight.w700,
-                color: AppColors.textPrimary,
-                letterSpacing: -0.5,
+            Expanded(
+              child: Text(
+                title,
+                softWrap: true,
+                style: GoogleFonts.sora(
+                  fontSize: isSmallPhone ? 25 : (Responsive.isMobile(context) ? 28 : 32),
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.textPrimary,
+                  letterSpacing: 0,
+                  height: 1.16,
+                ),
               ),
             ),
           ],
@@ -43,7 +49,7 @@ class SectionTitle extends StatelessWidget {
             child: Text(
               subtitle!,
               style: TextStyle(
-                fontSize: 15,
+                fontSize: isSmallPhone ? 13 : 15,
                 color: AppColors.textSecondary,
                 height: 1.6,
               ),

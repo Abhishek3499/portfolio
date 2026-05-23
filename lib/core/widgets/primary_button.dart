@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../constants/app_colors.dart';
 import '../constants/app_spacing.dart';
+import '../../responsive/responsive.dart';
 
 class PrimaryButton extends StatefulWidget {
   final String label;
@@ -32,6 +33,7 @@ class _PrimaryButtonState extends State<PrimaryButton> {
     final outlinedFill = _hovered
         ? AppColors.interactiveSurface
         : AppColors.surface.withValues(alpha: AppColors.isDark ? 0.04 : 0.72);
+    final isSmallPhone = Responsive.isSmallPhone(context);
 
     return MouseRegion(
       cursor: SystemMouseCursors.click,
@@ -52,9 +54,9 @@ class _PrimaryButtonState extends State<PrimaryButton> {
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 220),
             curve: Curves.easeOutCubic,
-            padding: const EdgeInsets.symmetric(
-              horizontal: AppSpacing.xl,
-              vertical: AppSpacing.md,
+            padding: EdgeInsets.symmetric(
+              horizontal: isSmallPhone ? AppSpacing.lg : AppSpacing.xl,
+              vertical: isSmallPhone ? 12 : AppSpacing.md,
             ),
             decoration: BoxDecoration(
               color: widget.outlined ? outlinedFill : null,
@@ -93,7 +95,7 @@ class _PrimaryButtonState extends State<PrimaryButton> {
                   widget.label,
                   style: TextStyle(
                     color: contentColor,
-                    fontSize: 14,
+                    fontSize: isSmallPhone ? 13 : 14,
                     fontWeight: FontWeight.w600,
                     letterSpacing: 0.3,
                   ),

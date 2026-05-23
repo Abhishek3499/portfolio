@@ -19,15 +19,16 @@ class TechStackSection extends ConsumerWidget {
     final skills = ref.watch(portfolioProvider).skills;
     final isMobile = Responsive.isMobile(context);
     final isTablet = Responsive.isTablet(context);
-    final crossAxisCount = isMobile ? 3 : (isTablet ? 4 : 5);
+    final width = Responsive.width(context);
+    final crossAxisCount = width < 360 ? 2 : (isMobile ? 3 : (isTablet ? 4 : 5));
 
     return PremiumBackground(
       surface: true,
       child: Container(
       width: double.infinity,
       padding: EdgeInsets.symmetric(
-        vertical: AppSpacing.section,
-        horizontal: isMobile ? AppSpacing.lg : AppSpacing.xl,
+        vertical: Responsive.sectionPadding(context),
+        horizontal: Responsive.horizontalPadding(context),
       ),
       child: Center(
         child: ConstrainedBox(
@@ -42,7 +43,11 @@ class TechStackSection extends ConsumerWidget {
                   subtitle: 'Technologies I work with daily.',
                 ),
               ),
-              const SizedBox(height: AppSpacing.xxl),
+              SizedBox(
+                height: Responsive.isSmallPhone(context)
+                    ? AppSpacing.xl
+                    : AppSpacing.xxl,
+              ),
               const _OrbitHeader().animate().fadeIn(duration: 650.ms),
               const SizedBox(height: AppSpacing.xl),
               GridView.builder(
@@ -50,9 +55,13 @@ class TechStackSection extends ConsumerWidget {
                 physics: const NeverScrollableScrollPhysics(),
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: crossAxisCount,
-                  crossAxisSpacing: AppSpacing.md,
-                  mainAxisSpacing: AppSpacing.md,
-                  childAspectRatio: isMobile ? 0.85 : 1.0,
+                  crossAxisSpacing: Responsive.isSmallPhone(context)
+                      ? AppSpacing.sm
+                      : AppSpacing.md,
+                  mainAxisSpacing: Responsive.isSmallPhone(context)
+                      ? AppSpacing.sm
+                      : AppSpacing.md,
+                  childAspectRatio: width < 360 ? 0.92 : (isMobile ? 0.82 : 1.0),
                 ),
                 itemCount: skills.length,
                 itemBuilder: (_, i) => SkillCard(skill: skills[i])

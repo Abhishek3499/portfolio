@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_spacing.dart';
 import '../../../core/widgets/premium_effects.dart';
+import '../../../responsive/responsive.dart';
 import '../models/skill_model.dart';
 
 class SkillCard extends StatefulWidget {
@@ -20,6 +21,7 @@ class _SkillCardState extends State<SkillCard> {
 
   @override
   Widget build(BuildContext context) {
+    final isSmallPhone = Responsive.isSmallPhone(context);
     return MouseRegion(
       onEnter: (_) => setState(() => _hovered = true),
       onExit: (_) => setState(() => _hovered = false),
@@ -32,7 +34,7 @@ class _SkillCardState extends State<SkillCard> {
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 240),
             curve: Curves.easeOutCubic,
-            padding: const EdgeInsets.all(AppSpacing.lg),
+            padding: EdgeInsets.all(isSmallPhone ? AppSpacing.md : AppSpacing.lg),
             decoration: BoxDecoration(
               gradient: _hovered
                   ? LinearGradient(
@@ -66,7 +68,7 @@ class _SkillCardState extends State<SkillCard> {
               children: [
                 AnimatedContainer(
                   duration: const Duration(milliseconds: 220),
-                  padding: const EdgeInsets.all(AppSpacing.md),
+                  padding: EdgeInsets.all(isSmallPhone ? AppSpacing.sm : AppSpacing.md),
                   decoration: BoxDecoration(
                     color: _hovered
                         ? AppColors.accent.withValues(alpha: 0.15)
@@ -83,7 +85,7 @@ class _SkillCardState extends State<SkillCard> {
                   ),
                   child: FaIcon(
                     widget.skill.icon,
-                    size: 22,
+                    size: isSmallPhone ? 19 : 22,
                     color: _hovered ? AppColors.accent : AppColors.accentSecondary,
                   ),
                 )
@@ -100,7 +102,7 @@ class _SkillCardState extends State<SkillCard> {
                 Text(
                   widget.skill.name,
                   style: TextStyle(
-                    fontSize: 13,
+                    fontSize: isSmallPhone ? 12 : 13,
                     fontWeight: FontWeight.w700,
                     color: _hovered
                         ? AppColors.textPrimary
@@ -112,7 +114,7 @@ class _SkillCardState extends State<SkillCard> {
                 Text(
                   widget.skill.category,
                   style: TextStyle(
-                    fontSize: 11,
+                    fontSize: isSmallPhone ? 10 : 11,
                     color: AppColors.textMuted,
                     letterSpacing: 0.5,
                   ),

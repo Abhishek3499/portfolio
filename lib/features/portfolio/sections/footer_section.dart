@@ -44,7 +44,7 @@ class FooterSection extends StatelessWidget {
         child: Padding(
           padding: EdgeInsets.symmetric(
             vertical: AppSpacing.xl,
-            horizontal: isMobile ? AppSpacing.lg : AppSpacing.xl,
+            horizontal: Responsive.horizontalPadding(context),
           ),
           child: Center(
             child: ConstrainedBox(
@@ -203,6 +203,7 @@ class _Copyright extends StatelessWidget {
     return Text(
       AppStrings.footerText,
       style: TextStyle(fontSize: 12, color: AppColors.textMuted),
+      textAlign: TextAlign.center,
     );
   }
 }

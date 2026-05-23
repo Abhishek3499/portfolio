@@ -31,6 +31,7 @@ class _HeroSectionState extends State<HeroSection> {
   Widget build(BuildContext context) {
     final isMobile = Responsive.isMobile(context);
     final isTablet = Responsive.isTablet(context);
+    final isSmallPhone = Responsive.isSmallPhone(context);
     final size = MediaQuery.of(context).size;
     final parallax = isMobile
         ? Offset.zero
@@ -80,8 +81,8 @@ class _HeroSectionState extends State<HeroSection> {
                   ),
                   child: Padding(
                     padding: EdgeInsets.symmetric(
-                      horizontal: isMobile ? AppSpacing.lg : AppSpacing.xl,
-                      vertical: AppSpacing.section,
+                      horizontal: Responsive.horizontalPadding(context),
+                      vertical: Responsive.sectionPadding(context),
                     ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -96,7 +97,9 @@ class _HeroSectionState extends State<HeroSection> {
                             .slideY(begin: 0.3, end: 0),
                         const SizedBox(height: AppSpacing.xl),
                         _GlowingName(
-                              fontSize: isMobile ? 36 : (isTablet ? 52 : 68),
+                              fontSize: isSmallPhone
+                                  ? 30
+                                  : (isMobile ? 36 : (isTablet ? 52 : 68)),
                             )
                             .animate()
                             .fadeIn(delay: 340.ms, duration: 850.ms)
@@ -105,9 +108,9 @@ class _HeroSectionState extends State<HeroSection> {
                         AnimatedTextKit(
                           repeatForever: true,
                           animatedTexts: [
-                            _gradientTypewriter('Flutter Developer'),
-                            _gradientTypewriter('Mobile Engineer'),
-                            _gradientTypewriter('UI/UX Craftsman'),
+                            _gradientTypewriter(context, 'Flutter Developer'),
+                            _gradientTypewriter(context, 'Mobile Engineer'),
+                            _gradientTypewriter(context, 'UI/UX Craftsman'),
                           ],
                         ).animate().fadeIn(delay: 520.ms, duration: 700.ms),
                         const SizedBox(height: AppSpacing.xl),
@@ -116,7 +119,7 @@ class _HeroSectionState extends State<HeroSection> {
                               child: Text(
                                 AppStrings.tagline,
                                 style: TextStyle(
-                                  fontSize: isMobile ? 15 : 17,
+                                  fontSize: isSmallPhone ? 14 : (isMobile ? 15 : 17),
                                   color: AppColors.textSecondary,
                                   height: 1.75,
                                 ),
@@ -125,7 +128,7 @@ class _HeroSectionState extends State<HeroSection> {
                             .animate()
                             .fadeIn(delay: 700.ms, duration: 800.ms)
                             .slideY(begin: 0.18, end: 0),
-                        const SizedBox(height: AppSpacing.xxl),
+                        SizedBox(height: isSmallPhone ? AppSpacing.xl : AppSpacing.xxl),
                         Wrap(
                               spacing: AppSpacing.md,
                               runSpacing: AppSpacing.md,
@@ -151,8 +154,13 @@ class _HeroSectionState extends State<HeroSection> {
                             .animate()
                             .fadeIn(delay: 860.ms, duration: 760.ms)
                             .slideY(begin: 0.18, end: 0),
-                        const SizedBox(height: AppSpacing.section),
-                        _ScrollIndicator()
+                        SizedBox(
+                          height: isSmallPhone
+                              ? AppSpacing.xl
+                              : AppSpacing.section,
+                        ),
+                        if (!Responsive.isTinyPhone(context))
+                          _ScrollIndicator()
                             .animate(onPlay: (c) => c.repeat())
                             .fadeIn(delay: 1200.ms)
                             .then()
@@ -181,11 +189,14 @@ class _HeroSectionState extends State<HeroSection> {
     );
   }
 
-  TypewriterAnimatedText _gradientTypewriter(String text) {
+  TypewriterAnimatedText _gradientTypewriter(BuildContext context, String text) {
+    final fontSize = Responsive.isSmallPhone(context)
+        ? 24.0
+        : (Responsive.isMobile(context) ? 30.0 : 38.0);
     return TypewriterAnimatedText(
       text,
       textStyle: GoogleFonts.sora(
-        fontSize: 38,
+        fontSize: fontSize,
         fontWeight: FontWeight.w700,
         foreground: Paint()
           ..shader = AppColors.accentGradient.createShader(
