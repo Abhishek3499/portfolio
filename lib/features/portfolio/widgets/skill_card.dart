@@ -26,10 +26,10 @@ class _SkillCardState extends State<SkillCard> {
       onEnter: (_) => setState(() => _hovered = true),
       onExit: (_) => setState(() => _hovered = false),
       child: PremiumHover(
-        lift: 5,
-        scale: 1.02,
+        lift: 3,
+        scale: 1.01,
         child: GradientBorder(
-          active: _hovered,
+          active: false,
           borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 240),
@@ -42,7 +42,7 @@ class _SkillCardState extends State<SkillCard> {
                       end: Alignment.bottomRight,
                       colors: [
                         AppColors.surfaceElevated,
-                        AppColors.accent.withValues(alpha: 0.12),
+                        AppColors.accent.withValues(alpha: 0.04),
                       ],
                     )
                   : AppColors.cardGradient,
@@ -50,15 +50,19 @@ class _SkillCardState extends State<SkillCard> {
               boxShadow: _hovered
                   ? [
                       BoxShadow(
-                        color: AppColors.accent.withValues(alpha: 0.18),
-                        blurRadius: 22,
-                        offset: const Offset(0, 7),
+                        color: Colors.black.withValues(
+                          alpha: AppColors.isDark ? 0.18 : 0.08,
+                        ),
+                        blurRadius: 14,
+                        offset: const Offset(0, 5),
                       ),
                     ]
                   : [
                       BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.14),
-                        blurRadius: 12,
+                        color: Colors.black.withValues(
+                          alpha: AppColors.isDark ? 0.12 : 0.06,
+                        ),
+                        blurRadius: 10,
                         offset: const Offset(0, 4),
                       ),
                     ],
@@ -71,14 +75,14 @@ class _SkillCardState extends State<SkillCard> {
                   padding: EdgeInsets.all(isSmallPhone ? AppSpacing.sm : AppSpacing.md),
                   decoration: BoxDecoration(
                     color: _hovered
-                        ? AppColors.accent.withValues(alpha: 0.15)
-                        : AppColors.accentGlow,
+                        ? AppColors.accent.withValues(alpha: 0.08)
+                        : AppColors.accentSecondary.withValues(alpha: 0.07),
                     borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
                     boxShadow: _hovered
                         ? [
                             BoxShadow(
-                              color: AppColors.accent.withValues(alpha: 0.22),
-                              blurRadius: 18,
+                              color: AppColors.accent.withValues(alpha: 0.08),
+                              blurRadius: 10,
                             ),
                           ]
                         : null,

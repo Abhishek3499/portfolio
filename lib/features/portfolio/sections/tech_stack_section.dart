@@ -164,8 +164,11 @@ class _OrbitChip extends StatelessWidget {
         border: Border.all(color: AppColors.border),
         boxShadow: [
           BoxShadow(
-            color: AppColors.accent.withValues(alpha: 0.15),
-            blurRadius: 16,
+            color: Colors.black.withValues(
+              alpha: AppColors.isDark ? 0.14 : 0.06,
+            ),
+            blurRadius: 10,
+            offset: const Offset(0, 3),
           ),
         ],
       ),

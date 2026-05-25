@@ -1,9 +1,7 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../constants/app_colors.dart';
 import '../constants/app_spacing.dart';
-import '../../responsive/responsive.dart';
 
 class PremiumBackground extends StatelessWidget {
   final Widget child;
@@ -236,74 +234,9 @@ class PremiumCursorLayer extends StatefulWidget {
 }
 
 class _PremiumCursorLayerState extends State<PremiumCursorLayer> {
-  Offset _position = Offset.zero;
-  bool _inside = false;
-  bool _pressed = false;
-
-  bool get _enabled => kIsWeb || defaultTargetPlatform == TargetPlatform.windows ||
-      defaultTargetPlatform == TargetPlatform.macOS ||
-      defaultTargetPlatform == TargetPlatform.linux;
-
   @override
   Widget build(BuildContext context) {
-    if (!_enabled || Responsive.isMobile(context)) return widget.child;
-
-    return MouseRegion(
-      cursor: MouseCursor.defer,
-      onEnter: (_) => setState(() => _inside = true),
-      onExit: (_) => setState(() => _inside = false),
-      onHover: (event) => setState(() => _position = event.localPosition),
-      child: Listener(
-        onPointerDown: (_) => setState(() => _pressed = true),
-        onPointerUp: (_) => setState(() => _pressed = false),
-        child: Stack(
-          children: [
-            widget.child,
-            if (_inside)
-              AnimatedPositioned(
-                duration: const Duration(milliseconds: 90),
-                curve: Curves.easeOutCubic,
-                left: _position.dx - (_pressed ? 24 : 18),
-                top: _position.dy - (_pressed ? 24 : 18),
-                child: IgnorePointer(
-                  child: AnimatedContainer(
-                    duration: const Duration(milliseconds: 160),
-                    width: _pressed ? 48 : 36,
-                    height: _pressed ? 48 : 36,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        color: AppColors.accentSecondary.withValues(alpha: 0.55),
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: AppColors.accent.withValues(alpha: 0.22),
-                          blurRadius: 18,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            if (_inside)
-              Positioned(
-                left: _position.dx - 3,
-                top: _position.dy - 3,
-                child: IgnorePointer(
-                  child: Container(
-                    width: 6,
-                    height: 6,
-                    decoration: BoxDecoration(
-                      color: AppColors.accentSecondary,
-                      shape: BoxShape.circle,
-                    ),
-                  ),
-                ),
-              ),
-          ],
-        ),
-      ),
-    );
+    return widget.child;
   }
 }
 
