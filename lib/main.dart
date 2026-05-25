@@ -20,6 +20,7 @@ class PortfolioApp extends ConsumerWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Abhishek Sharma - Flutter Developer',
+      color: AppColors.background,
       theme: AppTheme.light,
       darkTheme: AppTheme.dark,
       themeMode: themeMode,

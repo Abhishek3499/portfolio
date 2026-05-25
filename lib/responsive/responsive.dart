@@ -3,20 +3,22 @@ import 'package:flutter/material.dart';
 class Responsive {
   static double width(BuildContext context) => MediaQuery.sizeOf(context).width;
 
+  static double height(BuildContext context) => MediaQuery.sizeOf(context).height;
+
   static bool isTinyPhone(BuildContext context) => width(context) < 360;
 
   static bool isSmallPhone(BuildContext context) => width(context) < 430;
 
   static bool isMobile(BuildContext context) =>
-      width(context) < 768;
+      width(context) < 768 || (width(context) < 950 && height(context) < 500);
 
   static bool isTablet(BuildContext context) {
     final w = width(context);
-    return w >= 768 && w < 1100;
+    return !isMobile(context) && w >= 768 && w < 1100;
   }
 
   static bool isDesktop(BuildContext context) =>
-      width(context) >= 1100;
+      !isMobile(context) && width(context) >= 1100;
 
   static bool isCompactDesktop(BuildContext context) {
     final w = width(context);

@@ -33,6 +33,7 @@ class _HeroSectionState extends State<HeroSection> {
     final isTablet = Responsive.isTablet(context);
     final isSmallPhone = Responsive.isSmallPhone(context);
     final size = MediaQuery.of(context).size;
+    final isCompactHeight = size.height < 620;
     final parallax = isMobile
         ? Offset.zero
         : Offset(
@@ -82,14 +83,18 @@ class _HeroSectionState extends State<HeroSection> {
                   child: Padding(
                     padding: EdgeInsets.symmetric(
                       horizontal: Responsive.horizontalPadding(context),
-                      vertical: Responsive.sectionPadding(context),
+                      vertical: isCompactHeight
+                          ? AppSpacing.lg
+                          : Responsive.sectionPadding(context),
                     ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SizedBox(
-                          height: isMobile ? AppSpacing.xxxl : AppSpacing.xxl,
+                          height: isCompactHeight
+                              ? AppSpacing.xl
+                              : (isMobile ? AppSpacing.xxxl : AppSpacing.xxl),
                         ),
                         _Badge()
                             .animate()
@@ -99,7 +104,9 @@ class _HeroSectionState extends State<HeroSection> {
                         _GlowingName(
                               fontSize: isSmallPhone
                                   ? 30
-                                  : (isMobile ? 36 : (isTablet ? 52 : 68)),
+                                  : (isMobile
+                                      ? 36
+                                      : (isTablet ? 52 : (isCompactHeight ? 56 : 68))),
                             )
                             .animate()
                             .fadeIn(delay: 340.ms, duration: 850.ms)
@@ -157,9 +164,9 @@ class _HeroSectionState extends State<HeroSection> {
                         SizedBox(
                           height: isSmallPhone
                               ? AppSpacing.xl
-                              : AppSpacing.section,
+                              : (isCompactHeight ? AppSpacing.xl : AppSpacing.section),
                         ),
-                        if (!Responsive.isTinyPhone(context))
+                        if (!Responsive.isTinyPhone(context) && !isCompactHeight)
                           _ScrollIndicator()
                             .animate(onPlay: (c) => c.repeat())
                             .fadeIn(delay: 1200.ms)
