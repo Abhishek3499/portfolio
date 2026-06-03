@@ -121,9 +121,8 @@ class _SocialRow extends StatelessWidget {
         ),
         const SizedBox(width: AppSpacing.md),
         _FooterIcon(
-          icon: Icons.email_outlined,
+          materialIcon: Icons.email_outlined,
           onTap: () => onLaunch('mailto:${AppStrings.email}'),
-          isMaterial: true,
         ),
       ],
     );
@@ -131,15 +130,11 @@ class _SocialRow extends StatelessWidget {
 }
 
 class _FooterIcon extends StatefulWidget {
-  final dynamic icon;
+  final FaIconData? icon;
+  final IconData? materialIcon;
   final VoidCallback onTap;
-  final bool isMaterial;
 
-  const _FooterIcon({
-    required this.icon,
-    required this.onTap,
-    this.isMaterial = false,
-  });
+  const _FooterIcon({this.icon, this.materialIcon, required this.onTap});
 
   @override
   State<_FooterIcon> createState() => _FooterIconState();
@@ -177,14 +172,14 @@ class _FooterIconState extends State<_FooterIcon> {
                     ]
                   : null,
             ),
-            child: widget.isMaterial
+            child: widget.materialIcon != null
                 ? Icon(
-                    widget.icon as IconData,
+                    widget.materialIcon,
                     size: 18,
                     color: _hovered ? AppColors.accent : AppColors.textMuted,
                   )
                 : FaIcon(
-                    widget.icon as IconData,
+                    widget.icon!,
                     size: 16,
                     color: _hovered ? AppColors.accent : AppColors.textMuted,
                   ),

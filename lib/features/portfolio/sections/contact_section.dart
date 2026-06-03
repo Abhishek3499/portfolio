@@ -26,99 +26,101 @@ class ContactSection extends StatelessWidget {
 
     return PremiumBackground(
       child: Container(
-      width: double.infinity,
-      padding: EdgeInsets.symmetric(
-        vertical: Responsive.sectionPadding(context),
-        horizontal: Responsive.horizontalPadding(context),
-      ),
-      child: Center(
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 720),
-          child: Column(
-            children: [
-              Text(
-                AppStrings.contactTitle,
-                style: GoogleFonts.sora(
-                  fontSize: isSmallPhone ? 24 : (isMobile ? 28 : 40),
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.textPrimary,
-                  height: 1.2,
-                  letterSpacing: -0.5,
-                ),
-                textAlign: TextAlign.center,
-              ).animate().fadeIn(duration: 600.ms).slideY(begin: 0.2, end: 0),
-              const SizedBox(height: AppSpacing.md),
-              Text(
-                AppStrings.contactSubtitle,
-                style: TextStyle(
-                  fontSize: isSmallPhone ? 14 : 16,
-                  color: AppColors.textSecondary,
-                  height: 1.6,
-                ),
-                textAlign: TextAlign.center,
-              ).animate().fadeIn(delay: 150.ms, duration: 600.ms),
-              const SizedBox(height: AppSpacing.xxl),
-              PremiumHover(
-                lift: 5,
-                child: GlassCard(
-                    child: isMobile
-                        ? Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              const _EmailCopy(),
-                              const SizedBox(height: AppSpacing.md),
-                              PrimaryButton(
-                                label: 'Send Email',
-                                onTap: () => _launch('mailto:${AppStrings.email}'),
-                              ),
-                            ],
-                          )
-                        : Row(
-                            children: [
-                              const _EmailCopy(expanded: true),
-                              const SizedBox(width: AppSpacing.md),
-                              PrimaryButton(
-                                label: 'Send Email',
-                                onTap: () => _launch('mailto:${AppStrings.email}'),
-                              ),
-                            ],
-                          ),
-                  ),
-              )
-                  .animate()
-                  .fadeIn(delay: 250.ms, duration: 600.ms)
-                  .slideY(begin: 0.08, end: 0)
-                  .blurXY(begin: 8, end: 0),
-              const SizedBox(height: AppSpacing.xl),
-              Wrap(
-                spacing: AppSpacing.md,
-                runSpacing: AppSpacing.md,
-                alignment: WrapAlignment.center,
-                children: [
-                  _SocialButton(
-                    icon: FontAwesomeIcons.linkedin,
-                    label: 'LinkedIn',
-                    color: const Color(0xFF0A66C2),
-                    onTap: () => _launch(AppStrings.linkedIn),
-                  ),
-                  _SocialButton(
-                    icon: FontAwesomeIcons.github,
-                    label: 'GitHub',
+        width: double.infinity,
+        padding: EdgeInsets.symmetric(
+          vertical: Responsive.sectionPadding(context),
+          horizontal: Responsive.horizontalPadding(context),
+        ),
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 720),
+            child: Column(
+              children: [
+                Text(
+                  AppStrings.contactTitle,
+                  style: GoogleFonts.sora(
+                    fontSize: isSmallPhone ? 24 : (isMobile ? 28 : 40),
+                    fontWeight: FontWeight.w700,
                     color: AppColors.textPrimary,
-                    onTap: () => _launch(AppStrings.github),
+                    height: 1.2,
+                    letterSpacing: -0.5,
                   ),
-                  _SocialButton(
-                    icon: FontAwesomeIcons.whatsapp,
-                    label: 'WhatsApp',
-                    color: const Color(0xFF25D366),
-                    onTap: () => _launch(AppStrings.whatsapp),
+                  textAlign: TextAlign.center,
+                ).animate().fadeIn(duration: 600.ms).slideY(begin: 0.2, end: 0),
+                const SizedBox(height: AppSpacing.md),
+                Text(
+                  AppStrings.contactSubtitle,
+                  style: TextStyle(
+                    fontSize: isSmallPhone ? 14 : 16,
+                    color: AppColors.textSecondary,
+                    height: 1.6,
                   ),
-                ],
-              ).animate().fadeIn(delay: 400.ms, duration: 600.ms),
-            ],
+                  textAlign: TextAlign.center,
+                ).animate().fadeIn(delay: 150.ms, duration: 600.ms),
+                const SizedBox(height: AppSpacing.xxl),
+                PremiumHover(
+                      lift: 5,
+                      child: GlassCard(
+                        child: isMobile
+                            ? Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  const _EmailCopy(),
+                                  const SizedBox(height: AppSpacing.md),
+                                  PrimaryButton(
+                                    label: 'Send Email',
+                                    onTap: () =>
+                                        _launch('mailto:${AppStrings.email}'),
+                                  ),
+                                ],
+                              )
+                            : Row(
+                                children: [
+                                  const _EmailCopy(expanded: true),
+                                  const SizedBox(width: AppSpacing.md),
+                                  PrimaryButton(
+                                    label: 'Send Email',
+                                    onTap: () =>
+                                        _launch('mailto:${AppStrings.email}'),
+                                  ),
+                                ],
+                              ),
+                      ),
+                    )
+                    .animate()
+                    .fadeIn(delay: 250.ms, duration: 600.ms)
+                    .slideY(begin: 0.08, end: 0)
+                    .blurXY(begin: 8, end: 0),
+                const SizedBox(height: AppSpacing.xl),
+                Wrap(
+                  spacing: AppSpacing.md,
+                  runSpacing: AppSpacing.md,
+                  alignment: WrapAlignment.center,
+                  children: [
+                    _SocialButton(
+                      icon: FontAwesomeIcons.linkedin,
+                      label: 'LinkedIn',
+                      color: const Color(0xFF0A66C2),
+                      onTap: () => _launch(AppStrings.linkedIn),
+                    ),
+                    _SocialButton(
+                      icon: FontAwesomeIcons.github,
+                      label: 'GitHub',
+                      color: AppColors.textPrimary,
+                      onTap: () => _launch(AppStrings.github),
+                    ),
+                    _SocialButton(
+                      icon: FontAwesomeIcons.whatsapp,
+                      label: 'WhatsApp',
+                      color: const Color(0xFF25D366),
+                      onTap: () => _launch(AppStrings.whatsapp),
+                    ),
+                  ],
+                ).animate().fadeIn(delay: 400.ms, duration: 600.ms),
+              ],
+            ),
           ),
         ),
-      ),
       ),
     );
   }
@@ -139,11 +141,7 @@ class _EmailCopy extends StatelessWidget {
             color: AppColors.accent.withValues(alpha: 0.12),
             borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
           ),
-          child: Icon(
-            Icons.email_outlined,
-            color: AppColors.accent,
-            size: 22,
-          ),
+          child: Icon(Icons.email_outlined, color: AppColors.accent, size: 22),
         ),
         const SizedBox(width: AppSpacing.md),
         Expanded(
@@ -178,7 +176,7 @@ class _EmailCopy extends StatelessWidget {
 }
 
 class _SocialButton extends StatefulWidget {
-  final IconData icon;
+  final FaIconData icon;
   final String label;
   final Color color;
   final VoidCallback onTap;

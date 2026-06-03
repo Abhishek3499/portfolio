@@ -1,6 +1,6 @@
 name: my_portfolio
 description: "Abhishek Sharma — Flutter Developer Portfolio"
-publish_to: 'none'
+publish_to: "none"
 version: 1.0.0+1
 
 environment:
@@ -9,6 +9,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+
+  font_awesome_flutter: ^11.0.0
   cupertino_icons: ^1.0.8
   flutter_riverpod: ^2.5.1
   flutter_animate: ^4.5.0
@@ -16,7 +18,6 @@ dependencies:
   url_launcher: ^6.3.0
   google_fonts: ^6.2.1
   visibility_detector: ^0.4.0+2
-  font_awesome_flutter: ^10.7.0
 
 dev_dependencies:
   flutter_test:
