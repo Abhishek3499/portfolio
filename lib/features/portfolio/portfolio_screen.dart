@@ -12,6 +12,7 @@ import 'sections/experience_section.dart';
 import 'sections/contact_section.dart';
 import 'sections/why_hire_me_section.dart';
 import 'sections/currently_learning_section.dart';
+import 'sections/github_section.dart';
 import 'sections/availability_cta_section.dart';
 import 'sections/footer_section.dart';
 
@@ -36,6 +37,7 @@ class _PortfolioScreenState extends ConsumerState<PortfolioScreen> {
   final _experienceKey = GlobalKey();
   final _whyHireKey = GlobalKey();
   final _learningKey = GlobalKey();
+  final _githubKey = GlobalKey();
   final _contactKey = GlobalKey();
 
   late final List<GlobalKey> _sectionKeys;
@@ -51,6 +53,7 @@ class _PortfolioScreenState extends ConsumerState<PortfolioScreen> {
       _experienceKey,
       _whyHireKey,
       _learningKey,
+      _githubKey,
       _contactKey,
     ];
     _scrollController.addListener(_handleScroll);
@@ -171,6 +174,10 @@ class _PortfolioScreenState extends ConsumerState<PortfolioScreen> {
                     KeyedSubtree(
                       key: _learningKey,
                       child: const CurrentlyLearningSection(),
+                    ),
+                    KeyedSubtree(
+                      key: _githubKey,
+                      child: const GithubSection(),
                     ),
                     KeyedSubtree(
                       key: _contactKey,

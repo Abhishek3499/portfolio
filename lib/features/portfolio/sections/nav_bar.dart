@@ -147,7 +147,7 @@ class _NavBarState extends ConsumerState<NavBar> {
                     lift: 3,
                     child: PrimaryButton(
                       label: 'Contact',
-                      onTap: () => _scrollTo(widget.sectionKeys[7]),
+                      onTap: () => _scrollTo(widget.sectionKeys[8]),
                     ),
                   ),
                 ] else
@@ -227,7 +227,7 @@ class _NavBarState extends ConsumerState<NavBar> {
             ),
             _MobileMenuTile(
               label: 'Contact',
-              onTap: () => _closeAndScroll(context, widget.sectionKeys[7]),
+              onTap: () => _closeAndScroll(context, widget.sectionKeys[8]),
             ),
             const SizedBox(height: AppSpacing.md),
           ],
