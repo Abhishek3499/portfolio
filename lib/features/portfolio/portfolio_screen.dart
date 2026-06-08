@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/widgets/premium_effects.dart';
+import '../journey/journey_page.dart';
 import 'sections/nav_bar.dart';
 import 'sections/hero_section.dart';
 import 'sections/about_section.dart';
@@ -9,6 +10,9 @@ import 'sections/tech_stack_section.dart';
 import 'sections/projects_section.dart';
 import 'sections/experience_section.dart';
 import 'sections/contact_section.dart';
+import 'sections/why_hire_me_section.dart';
+import 'sections/currently_learning_section.dart';
+import 'sections/availability_cta_section.dart';
 import 'sections/footer_section.dart';
 
 class PortfolioScreen extends ConsumerStatefulWidget {
@@ -30,6 +34,8 @@ class _PortfolioScreenState extends ConsumerState<PortfolioScreen> {
   final _skillsKey = GlobalKey();
   final _projectsKey = GlobalKey();
   final _experienceKey = GlobalKey();
+  final _whyHireKey = GlobalKey();
+  final _learningKey = GlobalKey();
   final _contactKey = GlobalKey();
 
   late final List<GlobalKey> _sectionKeys;
@@ -43,6 +49,8 @@ class _PortfolioScreenState extends ConsumerState<PortfolioScreen> {
       _skillsKey,
       _projectsKey,
       _experienceKey,
+      _whyHireKey,
+      _learningKey,
       _contactKey,
     ];
     _scrollController.addListener(_handleScroll);
@@ -106,6 +114,10 @@ class _PortfolioScreenState extends ConsumerState<PortfolioScreen> {
     }
   }
 
+  void _openJourney() {
+    Navigator.of(context).pushNamed(JourneyPage.routeName);
+  }
+
   @override
   Widget build(BuildContext context) {
     return PremiumCursorLayer(
@@ -136,12 +148,10 @@ class _PortfolioScreenState extends ConsumerState<PortfolioScreen> {
                       child: HeroSection(
                         onViewWork: () => _scrollTo(_projectsKey),
                         onContact: () => _scrollTo(_contactKey),
+                        onJourney: _openJourney,
                       ),
                     ),
-                    KeyedSubtree(
-                      key: _aboutKey,
-                      child: const AboutSection(),
-                    ),
+                    KeyedSubtree(key: _aboutKey, child: const AboutSection()),
                     KeyedSubtree(
                       key: _skillsKey,
                       child: const TechStackSection(),
@@ -155,8 +165,20 @@ class _PortfolioScreenState extends ConsumerState<PortfolioScreen> {
                       child: const ExperienceSection(),
                     ),
                     KeyedSubtree(
+                      key: _whyHireKey,
+                      child: const WhyHireMeSection(),
+                    ),
+                    KeyedSubtree(
+                      key: _learningKey,
+                      child: const CurrentlyLearningSection(),
+                    ),
+                    KeyedSubtree(
                       key: _contactKey,
                       child: const ContactSection(),
+                    ),
+                    AvailabilityCtaSection(
+                      onContact: () => _scrollTo(_contactKey),
+                      onJourney: _openJourney,
                     ),
                     const FooterSection(),
                   ],
@@ -171,6 +193,7 @@ class _PortfolioScreenState extends ConsumerState<PortfolioScreen> {
                 scrollController: _scrollController,
                 sectionKeys: _sectionKeys,
                 activeIndex: _activeSectionIndex,
+                onJourney: _openJourney,
               ),
             ),
             Positioned(

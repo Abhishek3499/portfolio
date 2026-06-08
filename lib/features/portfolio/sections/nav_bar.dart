@@ -12,12 +12,14 @@ class NavBar extends ConsumerStatefulWidget {
   final ScrollController scrollController;
   final List<GlobalKey> sectionKeys;
   final int activeIndex;
+  final VoidCallback onJourney;
 
   const NavBar({
     super.key,
     required this.scrollController,
     required this.sectionKeys,
     required this.activeIndex,
+    required this.onJourney,
   });
 
   @override
@@ -128,6 +130,16 @@ class _NavBarState extends ConsumerState<NavBar> {
                     active: widget.activeIndex == 4,
                     onTap: () => _scrollTo(widget.sectionKeys[4]),
                   ),
+                  const SizedBox(width: AppSpacing.sm),
+                  PremiumHover(
+                    lift: 3,
+                    child: PrimaryButton(
+                      label: 'My Journey',
+                      icon: Icons.route_outlined,
+                      outlined: true,
+                      onTap: widget.onJourney,
+                    ),
+                  ),
                   const SizedBox(width: AppSpacing.md),
                   _ThemeToggle(isDark: isDark, onChanged: _setThemeMode),
                   const SizedBox(width: AppSpacing.md),
@@ -135,7 +147,7 @@ class _NavBarState extends ConsumerState<NavBar> {
                     lift: 3,
                     child: PrimaryButton(
                       label: 'Contact',
-                      onTap: () => _scrollTo(widget.sectionKeys[5]),
+                      onTap: () => _scrollTo(widget.sectionKeys[7]),
                     ),
                   ),
                 ] else
@@ -189,31 +201,66 @@ class _NavBarState extends ConsumerState<NavBar> {
               ),
             ),
             const SizedBox(height: AppSpacing.xl),
-            ...[
-              'About',
-              'Skills',
-              'Projects',
-              'Experience',
-              'Contact',
-            ].asMap().entries.map(
-              (e) => ListTile(
-                title: Text(
-                  e.value,
-                  style: TextStyle(
-                    color: AppColors.textPrimary,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                onTap: () {
-                  Navigator.pop(context);
-                  _scrollTo(widget.sectionKeys[e.key + 1]);
-                },
-              ),
+            _MobileMenuTile(
+              label: 'About',
+              onTap: () => _closeAndScroll(context, widget.sectionKeys[1]),
+            ),
+            _MobileMenuTile(
+              label: 'Skills',
+              onTap: () => _closeAndScroll(context, widget.sectionKeys[2]),
+            ),
+            _MobileMenuTile(
+              label: 'Projects',
+              onTap: () => _closeAndScroll(context, widget.sectionKeys[3]),
+            ),
+            _MobileMenuTile(
+              label: 'Experience',
+              onTap: () => _closeAndScroll(context, widget.sectionKeys[4]),
+            ),
+            _MobileMenuTile(
+              label: 'My Journey',
+              icon: Icons.route_outlined,
+              onTap: () {
+                Navigator.pop(context);
+                widget.onJourney();
+              },
+            ),
+            _MobileMenuTile(
+              label: 'Contact',
+              onTap: () => _closeAndScroll(context, widget.sectionKeys[7]),
             ),
             const SizedBox(height: AppSpacing.md),
           ],
         ),
       ),
+    );
+  }
+
+  void _closeAndScroll(BuildContext context, GlobalKey key) {
+    Navigator.pop(context);
+    _scrollTo(key);
+  }
+}
+
+class _MobileMenuTile extends StatelessWidget {
+  final String label;
+  final IconData? icon;
+  final VoidCallback onTap;
+
+  const _MobileMenuTile({required this.label, this.icon, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      leading: icon == null ? null : Icon(icon, color: AppColors.accent),
+      title: Text(
+        label,
+        style: TextStyle(
+          color: AppColors.textPrimary,
+          fontWeight: FontWeight.w500,
+        ),
+      ),
+      onTap: onTap,
     );
   }
 }
@@ -285,11 +332,7 @@ class _NavLink extends StatefulWidget {
   final bool active;
   final VoidCallback onTap;
 
-  const _NavLink(
-    this.label, {
-    required this.active,
-    required this.onTap,
-  });
+  const _NavLink(this.label, {required this.active, required this.onTap});
 
   @override
   State<_NavLink> createState() => _NavLinkState();
@@ -337,7 +380,9 @@ class _NavLinkState extends State<_NavLink> {
                   duration: const Duration(milliseconds: 180),
                   style: TextStyle(
                     fontSize: 14,
-                    fontWeight: widget.active ? FontWeight.w700 : FontWeight.w500,
+                    fontWeight: widget.active
+                        ? FontWeight.w700
+                        : FontWeight.w500,
                     color: isActive
                         ? AppColors.textPrimary
                         : AppColors.textSecondary,

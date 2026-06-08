@@ -18,25 +18,30 @@ final scrollControllerProvider = Provider<ScrollController>((ref) {
 class PortfolioController {
   final List<ProjectModel> projects = const [
     ProjectModel(
-      title: 'Gruve — Short Video Social Platform',
+      title: 'Sports Management App',
       description:
-          'A modern short-video social media application inspired by TikTok and Instagram Reels, featuring immersive vertical scrolling, smooth animations, responsive UI, and engaging social interactions built with Flutter.',
+          'A responsive sports management application focused on real-time updates, booking management, chat, voice messages, and push notifications.',
       techTags: [
         'Flutter',
-        'Riverpod',
         'Firebase',
-        'REST API',
-        'Video Player',
-        'Clean Architecture',
+        'Riverpod',
+        'Chat',
+        'Push Notifications',
+        'Responsive UI',
       ],
       features: [
-        'Immersive vertical reels feed',
-        'Smooth video interactions',
-        'Responsive social UI',
-        'Clean scalable architecture',
+        'Authentication',
+        'Chat and voice messages',
+        'Push notifications',
+        'Responsive design',
       ],
+      role: 'Flutter Developer',
+      problem:
+          'Needed real-time sports updates and booking management in a clean mobile experience.',
+      solution:
+          'Built a responsive Flutter app with Firebase backend support, Riverpod state management, and a modern user interface.',
       githubUrl: 'https://github.com/dashboard',
-      emoji: 'Play',
+      emoji: 'Sports',
     ),
     ProjectModel(
       title: 'Auth Module',
@@ -74,37 +79,90 @@ class PortfolioController {
       icon: FontAwesomeIcons.mobile,
       category: 'Framework',
     ),
-    SkillModel(name: 'Dart', icon: FontAwesomeIcons.code, category: 'Language'),
     SkillModel(
-      name: 'Firebase',
-      icon: FontAwesomeIcons.fire,
-      category: 'Backend',
-    ),
-    SkillModel(
-      name: 'REST APIs',
-      icon: FontAwesomeIcons.plug,
-      category: 'Integration',
-    ),
-    SkillModel(
-      name: 'WebSocket',
-      icon: FontAwesomeIcons.wifi,
-      category: 'Real-time',
+      name: 'Dart',
+      icon: FontAwesomeIcons.code,
+      category: 'Language',
     ),
     SkillModel(
       name: 'Riverpod',
       icon: FontAwesomeIcons.layerGroup,
-      category: 'State',
+      category: 'State Management',
     ),
-    SkillModel(name: 'GetX', icon: FontAwesomeIcons.bolt, category: 'State'),
     SkillModel(
-      name: 'Clean Arch',
+      name: 'Bloc',
+      icon: FontAwesomeIcons.puzzlePiece,
+      category: 'State Management',
+    ),
+    SkillModel(
+      name: 'GetX',
+      icon: FontAwesomeIcons.bolt,
+      category: 'State Management',
+    ),
+    SkillModel(
+      name: 'Clean Architecture',
       icon: FontAwesomeIcons.cubes,
       category: 'Architecture',
     ),
     SkillModel(
-      name: 'Animations',
+      name: 'API Integration',
+      icon: FontAwesomeIcons.cloud,
+      category: 'API & Integration',
+    ),
+    SkillModel(
+      name: 'REST APIs',
+      icon: FontAwesomeIcons.plug,
+      category: 'API & Integration',
+    ),
+    SkillModel(
+      name: 'WebSocket',
+      icon: FontAwesomeIcons.wifi,
+      category: 'API & Integration',
+    ),
+    SkillModel(
+      name: 'Custom Animations',
       icon: FontAwesomeIcons.wandMagicSparkles,
-      category: 'UI/UX',
+      category: 'UI/UX & Design',
+    ),
+    SkillModel(
+      name: 'Responsive UI',
+      icon: FontAwesomeIcons.laptop,
+      category: 'UI/UX & Design',
+    ),
+    SkillModel(
+      name: 'Material Design',
+      icon: FontAwesomeIcons.palette,
+      category: 'UI/UX & Design',
+    ),
+    SkillModel(
+      name: 'Dark/Light Theme',
+      icon: FontAwesomeIcons.circleHalfStroke,
+      category: 'UI/UX & Design',
+    ),
+    SkillModel(
+      name: 'Firebase',
+      icon: FontAwesomeIcons.fire,
+      category: 'Backend & DB',
+    ),
+    SkillModel(
+      name: 'Local Storage',
+      icon: FontAwesomeIcons.database,
+      category: 'Backend & DB',
+    ),
+    SkillModel(
+      name: 'Authentication',
+      icon: FontAwesomeIcons.lock,
+      category: 'Security & Services',
+    ),
+    SkillModel(
+      name: 'Push Notifications',
+      icon: FontAwesomeIcons.bell,
+      category: 'Security & Services',
+    ),
+    SkillModel(
+      name: 'Git & GitHub',
+      icon: FontAwesomeIcons.github,
+      category: 'DevOps & Tools',
     ),
   ];
 
@@ -114,7 +172,7 @@ class PortfolioController {
       organization: 'Hardkore Tech, Mohali, Punjab',
       period: 'Nov 2025 - May 2026',
       description:
-          'Completed 6 months of Flutter development training and worked on 2 practical app projects using modern UI practices and clean architecture basics.',
+          'Completed 6 months of Flutter development training and worked on practical Flutter app projects using Firebase, state management, responsive UI, and clean architecture basics.',
       type: 'work',
     ),
     ExperienceModel(

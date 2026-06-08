@@ -72,16 +72,41 @@ class ContactSection extends StatelessWidget {
                                     onTap: () =>
                                         _launch('mailto:${AppStrings.email}'),
                                   ),
+                                  const SizedBox(height: AppSpacing.md),
+                                  PrimaryButton(
+                                    label: AppStrings.journeyCta,
+                                    icon: Icons.route_outlined,
+                                    outlined: true,
+                                    onTap: () => Navigator.of(
+                                      context,
+                                    ).pushNamed('/journey'),
+                                  ),
                                 ],
                               )
                             : Row(
                                 children: [
                                   const _EmailCopy(expanded: true),
                                   const SizedBox(width: AppSpacing.md),
-                                  PrimaryButton(
-                                    label: 'Send Email',
-                                    onTap: () =>
-                                        _launch('mailto:${AppStrings.email}'),
+                                  Wrap(
+                                    spacing: AppSpacing.md,
+                                    runSpacing: AppSpacing.md,
+                                    children: [
+                                      PrimaryButton(
+                                        label: 'Send Email',
+                                        icon: Icons.mail_outline_rounded,
+                                        onTap: () => _launch(
+                                          'mailto:${AppStrings.email}',
+                                        ),
+                                      ),
+                                      PrimaryButton(
+                                        label: AppStrings.journeyCta,
+                                        icon: Icons.route_outlined,
+                                        outlined: true,
+                                        onTap: () => Navigator.of(
+                                          context,
+                                        ).pushNamed('/journey'),
+                                      ),
+                                    ],
                                   ),
                                 ],
                               ),

@@ -29,19 +29,25 @@ class _PremiumBackgroundPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final base = Paint()..color = surface ? AppColors.surface : AppColors.background;
+    final base = Paint()
+      ..color = surface ? AppColors.surface : AppColors.background;
     canvas.drawRect(Offset.zero & size, base);
 
     final glowPaint = Paint()
-      ..shader = RadialGradient(
-        colors: [
-          AppColors.accent.withValues(alpha: AppColors.isDark ? 0.14 : 0.09),
-          Colors.transparent,
-        ],
-      ).createShader(Rect.fromCircle(
-        center: Offset(size.width * 0.12, size.height * 0.12),
-        radius: size.width * 0.42,
-      ));
+      ..shader =
+          RadialGradient(
+            colors: [
+              AppColors.accent.withValues(
+                alpha: AppColors.isDark ? 0.14 : 0.09,
+              ),
+              Colors.transparent,
+            ],
+          ).createShader(
+            Rect.fromCircle(
+              center: Offset(size.width * 0.12, size.height * 0.12),
+              radius: size.width * 0.42,
+            ),
+          );
     canvas.drawCircle(
       Offset(size.width * 0.12, size.height * 0.12),
       size.width * 0.42,
@@ -49,15 +55,20 @@ class _PremiumBackgroundPainter extends CustomPainter {
     );
 
     final secondaryGlow = Paint()
-      ..shader = RadialGradient(
-        colors: [
-          AppColors.accentSecondary.withValues(alpha: AppColors.isDark ? 0.1 : 0.07),
-          Colors.transparent,
-        ],
-      ).createShader(Rect.fromCircle(
-        center: Offset(size.width * 0.9, size.height * 0.82),
-        radius: size.width * 0.34,
-      ));
+      ..shader =
+          RadialGradient(
+            colors: [
+              AppColors.accentSecondary.withValues(
+                alpha: AppColors.isDark ? 0.1 : 0.07,
+              ),
+              Colors.transparent,
+            ],
+          ).createShader(
+            Rect.fromCircle(
+              center: Offset(size.width * 0.9, size.height * 0.82),
+              radius: size.width * 0.34,
+            ),
+          );
     canvas.drawCircle(
       Offset(size.width * 0.9, size.height * 0.82),
       size.width * 0.34,
@@ -65,7 +76,9 @@ class _PremiumBackgroundPainter extends CustomPainter {
     );
 
     final gridPaint = Paint()
-      ..color = AppColors.border.withValues(alpha: AppColors.isDark ? 0.18 : 0.34)
+      ..color = AppColors.border.withValues(
+        alpha: AppColors.isDark ? 0.18 : 0.34,
+      )
       ..strokeWidth = 0.7;
     const step = 48.0;
     for (double x = 0; x < size.width; x += step) {
@@ -76,7 +89,9 @@ class _PremiumBackgroundPainter extends CustomPainter {
     }
 
     final noisePaint = Paint()
-      ..color = AppColors.textPrimary.withValues(alpha: AppColors.isDark ? 0.018 : 0.025);
+      ..color = AppColors.textPrimary.withValues(
+        alpha: AppColors.isDark ? 0.018 : 0.025,
+      );
     for (double x = 6; x < size.width; x += 21) {
       for (double y = 8; y < size.height; y += 23) {
         if (((x + y).round() % 4) == 0) {
@@ -161,7 +176,9 @@ class _PremiumHoverState extends State<PremiumHover> {
   @override
   Widget build(BuildContext context) {
     return MouseRegion(
-      cursor: widget.onTap == null ? MouseCursor.defer : SystemMouseCursors.click,
+      cursor: widget.onTap == null
+          ? MouseCursor.defer
+          : SystemMouseCursors.click,
       onEnter: (_) => setState(() => _hovered = true),
       onExit: (_) => setState(() {
         _hovered = false;
@@ -172,13 +189,16 @@ class _PremiumHoverState extends State<PremiumHover> {
         onTapDown: (_) => setState(() => _pressed = true),
         onTapCancel: () => setState(() => _pressed = false),
         onTapUp: (_) => setState(() => _pressed = false),
-        child: AnimatedContainer(
+        child: AnimatedScale(
+          scale: _pressed ? 0.985 : (_hovered ? widget.scale : 1.0),
           duration: const Duration(milliseconds: 220),
           curve: Curves.easeOutCubic,
-          transform: Matrix4.identity()
-            ..translate(0.0, _hovered ? -widget.lift : 0.0)
-            ..scale(_pressed ? 0.985 : (_hovered ? widget.scale : 1.0)),
-          child: widget.child,
+          child: AnimatedSlide(
+            offset: Offset(0, _hovered ? -widget.lift / 100 : 0),
+            duration: const Duration(milliseconds: 220),
+            curve: Curves.easeOutCubic,
+            child: widget.child,
+          ),
         ),
       ),
     );
@@ -260,29 +280,29 @@ class PremiumLoader extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Container(
-                  width: 78,
-                  height: 78,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    gradient: AppColors.accentGradient,
-                    boxShadow: [
-                      BoxShadow(
-                        color: AppColors.accent.withValues(alpha: 0.32),
-                        blurRadius: 34,
+                      width: 78,
+                      height: 78,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        gradient: AppColors.accentGradient,
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppColors.accent.withValues(alpha: 0.32),
+                            blurRadius: 34,
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                  child: const Center(
-                    child: Text(
-                      'AS',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 24,
-                        fontWeight: FontWeight.w800,
+                      child: const Center(
+                        child: Text(
+                          'AS',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 24,
+                            fontWeight: FontWeight.w800,
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                )
+                    )
                     .animate(onPlay: (controller) => controller.repeat())
                     .scale(
                       begin: const Offset(0.96, 0.96),

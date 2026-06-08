@@ -6,6 +6,9 @@ class ProjectModel {
   final String? githubUrl;
   final String? liveUrl;
   final String emoji;
+  final String? role;
+  final String? problem;
+  final String? solution;
 
   const ProjectModel({
     required this.title,
@@ -15,5 +18,8 @@ class ProjectModel {
     this.githubUrl,
     this.liveUrl,
     required this.emoji,
+    this.role,
+    this.problem,
+    this.solution,
   });
 }

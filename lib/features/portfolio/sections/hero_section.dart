@@ -13,11 +13,13 @@ import '../../../responsive/responsive.dart';
 class HeroSection extends StatefulWidget {
   final VoidCallback onViewWork;
   final VoidCallback onContact;
+  final VoidCallback onJourney;
 
   const HeroSection({
     super.key,
     required this.onViewWork,
     required this.onContact,
+    required this.onJourney,
   });
 
   @override
@@ -105,8 +107,10 @@ class _HeroSectionState extends State<HeroSection> {
                               fontSize: isSmallPhone
                                   ? 30
                                   : (isMobile
-                                      ? 36
-                                      : (isTablet ? 52 : (isCompactHeight ? 56 : 68))),
+                                        ? 36
+                                        : (isTablet
+                                              ? 52
+                                              : (isCompactHeight ? 56 : 68))),
                             )
                             .animate()
                             .fadeIn(delay: 340.ms, duration: 850.ms)
@@ -115,9 +119,12 @@ class _HeroSectionState extends State<HeroSection> {
                         AnimatedTextKit(
                           repeatForever: true,
                           animatedTexts: [
-                            _gradientTypewriter(context, 'Flutter Developer'),
-                            _gradientTypewriter(context, 'Mobile Engineer'),
-                            _gradientTypewriter(context, 'UI/UX Craftsman'),
+                            _gradientTypewriter(
+                              context,
+                              'Junior Flutter Developer',
+                            ),
+                            _gradientTypewriter(context, 'Firebase + Riverpod'),
+                            _gradientTypewriter(context, 'Responsive App UI'),
                           ],
                         ).animate().fadeIn(delay: 520.ms, duration: 700.ms),
                         const SizedBox(height: AppSpacing.xl),
@@ -126,7 +133,9 @@ class _HeroSectionState extends State<HeroSection> {
                               child: Text(
                                 AppStrings.tagline,
                                 style: TextStyle(
-                                  fontSize: isSmallPhone ? 14 : (isMobile ? 15 : 17),
+                                  fontSize: isSmallPhone
+                                      ? 14
+                                      : (isMobile ? 15 : 17),
                                   color: AppColors.textSecondary,
                                   height: 1.75,
                                 ),
@@ -135,7 +144,14 @@ class _HeroSectionState extends State<HeroSection> {
                             .animate()
                             .fadeIn(delay: 700.ms, duration: 800.ms)
                             .slideY(begin: 0.18, end: 0),
-                        SizedBox(height: isSmallPhone ? AppSpacing.xl : AppSpacing.xxl),
+                        const SizedBox(height: AppSpacing.lg),
+                        const _ProofChips()
+                            .animate()
+                            .fadeIn(delay: 780.ms, duration: 680.ms)
+                            .slideY(begin: 0.12, end: 0),
+                        SizedBox(
+                          height: isSmallPhone ? AppSpacing.xl : AppSpacing.xxl,
+                        ),
                         Wrap(
                               spacing: AppSpacing.md,
                               runSpacing: AppSpacing.md,
@@ -151,9 +167,19 @@ class _HeroSectionState extends State<HeroSection> {
                                 PremiumHover(
                                   lift: 4,
                                   child: PrimaryButton(
+                                    label: AppStrings.journeyCta,
+                                    onTap: widget.onJourney,
+                                    outlined: true,
+                                    icon: Icons.route_outlined,
+                                  ),
+                                ),
+                                PremiumHover(
+                                  lift: 4,
+                                  child: PrimaryButton(
                                     label: AppStrings.heroCtaSecondary,
                                     onTap: widget.onContact,
                                     outlined: true,
+                                    icon: Icons.mail_outline_rounded,
                                   ),
                                 ),
                               ],
@@ -164,26 +190,29 @@ class _HeroSectionState extends State<HeroSection> {
                         SizedBox(
                           height: isSmallPhone
                               ? AppSpacing.xl
-                              : (isCompactHeight ? AppSpacing.xl : AppSpacing.section),
+                              : (isCompactHeight
+                                    ? AppSpacing.xl
+                                    : AppSpacing.section),
                         ),
-                        if (!Responsive.isTinyPhone(context) && !isCompactHeight)
+                        if (!Responsive.isTinyPhone(context) &&
+                            !isCompactHeight)
                           _ScrollIndicator()
-                            .animate(onPlay: (c) => c.repeat())
-                            .fadeIn(delay: 1200.ms)
-                            .then()
-                            .moveY(
-                              begin: 0,
-                              end: 8,
-                              duration: 900.ms,
-                              curve: Curves.easeInOut,
-                            )
-                            .then()
-                            .moveY(
-                              begin: 8,
-                              end: 0,
-                              duration: 900.ms,
-                              curve: Curves.easeInOut,
-                            ),
+                              .animate(onPlay: (c) => c.repeat())
+                              .fadeIn(delay: 1200.ms)
+                              .then()
+                              .moveY(
+                                begin: 0,
+                                end: 8,
+                                duration: 900.ms,
+                                curve: Curves.easeInOut,
+                              )
+                              .then()
+                              .moveY(
+                                begin: 8,
+                                end: 0,
+                                duration: 900.ms,
+                                curve: Curves.easeInOut,
+                              ),
                       ],
                     ),
                   ),
@@ -196,7 +225,10 @@ class _HeroSectionState extends State<HeroSection> {
     );
   }
 
-  TypewriterAnimatedText _gradientTypewriter(BuildContext context, String text) {
+  TypewriterAnimatedText _gradientTypewriter(
+    BuildContext context,
+    String text,
+  ) {
     final fontSize = Responsive.isSmallPhone(context)
         ? 24.0
         : (Responsive.isMobile(context) ? 30.0 : 38.0);
@@ -239,7 +271,7 @@ class _Badge extends StatelessWidget {
           ),
           const SizedBox(width: 8),
           Text(
-            'Available for opportunities',
+            'Open for Internship & Freelance Opportunities',
             style: TextStyle(
               fontSize: 12,
               color: AppColors.accentSecondary,
@@ -249,6 +281,46 @@ class _Badge extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class _ProofChips extends StatelessWidget {
+  const _ProofChips();
+
+  @override
+  Widget build(BuildContext context) {
+    const items = [
+      '6 Months Professional Training',
+      '3+ Real-World Projects',
+      'Flutter - Firebase - Riverpod',
+    ];
+
+    return Wrap(
+      spacing: AppSpacing.sm,
+      runSpacing: AppSpacing.sm,
+      children: items
+          .map(
+            (item) => Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
+              decoration: BoxDecoration(
+                color: AppColors.surface.withValues(
+                  alpha: AppColors.isDark ? 0.42 : 0.78,
+                ),
+                borderRadius: BorderRadius.circular(100),
+                border: Border.all(color: AppColors.borderLight),
+              ),
+              child: Text(
+                item,
+                style: TextStyle(
+                  color: AppColors.textSecondary,
+                  fontSize: Responsive.isSmallPhone(context) ? 11 : 12,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          )
+          .toList(),
     );
   }
 }
@@ -331,20 +403,22 @@ class _GlowingName extends StatelessWidget {
     return Stack(
       children: [
         Text(
-          AppStrings.name,
-          style: GoogleFonts.sora(
-            fontSize: fontSize,
-            fontWeight: FontWeight.w800,
-            color: AppColors.accent.withValues(alpha: 0.2),
-            height: 1.05,
-            shadows: [
-              Shadow(
-                color: AppColors.accent.withValues(alpha: 0.4),
-                blurRadius: 34,
+              AppStrings.name,
+              style: GoogleFonts.sora(
+                fontSize: fontSize,
+                fontWeight: FontWeight.w800,
+                color: AppColors.accent.withValues(alpha: 0.2),
+                height: 1.05,
+                shadows: [
+                  Shadow(
+                    color: AppColors.accent.withValues(alpha: 0.4),
+                    blurRadius: 34,
+                  ),
+                ],
               ),
-            ],
-          ),
-        ).animate(onPlay: (controller) => controller.repeat()).shimmer(
+            )
+            .animate(onPlay: (controller) => controller.repeat())
+            .shimmer(
               duration: 2400.ms,
               color: AppColors.accentSecondary.withValues(alpha: 0.45),
             ),
@@ -367,53 +441,52 @@ class _OrbitBadge extends StatelessWidget {
   Widget build(BuildContext context) {
     if (Responsive.isMobile(context)) return const SizedBox.shrink();
     return SizedBox(
-      width: 170,
-      height: 170,
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          Container(
-            width: 150,
-            height: 150,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.all(
-                color: AppColors.accent.withValues(alpha: 0.16),
-              ),
-            ),
-          ),
-          ...List.generate(3, (i) {
-            final angle = i * math.pi * 2 / 3;
-            return Transform.translate(
-              offset: Offset(math.cos(angle) * 64, math.sin(angle) * 64),
-              child: Container(
-                width: 34,
-                height: 34,
+          width: 170,
+          height: 170,
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              Container(
+                width: 150,
+                height: 150,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: AppColors.surface.withValues(alpha: 0.72),
-                  border: Border.all(color: AppColors.border),
-                  boxShadow: [
-                    BoxShadow(
-                      color: AppColors.accent.withValues(alpha: 0.16),
-                      blurRadius: 18,
-                    ),
-                  ],
-                ),
-                child: Icon(
-                  [Icons.flutter_dash, Icons.auto_awesome, Icons.speed][i],
-                  size: 16,
-                  color: AppColors.accentSecondary,
+                  border: Border.all(
+                    color: AppColors.accent.withValues(alpha: 0.16),
+                  ),
                 ),
               ),
-            );
-          }),
-        ],
-      ),
-    ).animate(onPlay: (controller) => controller.repeat()).rotate(
-          duration: 12000.ms,
-          curve: Curves.linear,
-        );
+              ...List.generate(3, (i) {
+                final angle = i * math.pi * 2 / 3;
+                return Transform.translate(
+                  offset: Offset(math.cos(angle) * 64, math.sin(angle) * 64),
+                  child: Container(
+                    width: 34,
+                    height: 34,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: AppColors.surface.withValues(alpha: 0.72),
+                      border: Border.all(color: AppColors.border),
+                      boxShadow: [
+                        BoxShadow(
+                          color: AppColors.accent.withValues(alpha: 0.16),
+                          blurRadius: 18,
+                        ),
+                      ],
+                    ),
+                    child: Icon(
+                      [Icons.flutter_dash, Icons.auto_awesome, Icons.speed][i],
+                      size: 16,
+                      color: AppColors.accentSecondary,
+                    ),
+                  ),
+                );
+              }),
+            ],
+          ),
+        )
+        .animate(onPlay: (controller) => controller.repeat())
+        .rotate(duration: 12000.ms, curve: Curves.linear);
   }
 }
 
@@ -421,7 +494,9 @@ class _ParticlePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = AppColors.accentSecondary.withValues(alpha: AppColors.isDark ? 0.18 : 0.12);
+      ..color = AppColors.accentSecondary.withValues(
+        alpha: AppColors.isDark ? 0.18 : 0.12,
+      );
     for (var i = 0; i < 46; i++) {
       final x = (math.sin(i * 12.9898) * 43758.5453).abs() % size.width;
       final y = (math.cos(i * 78.233) * 24634.6345).abs() % size.height;

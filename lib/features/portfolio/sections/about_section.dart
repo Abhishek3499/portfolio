@@ -25,8 +25,8 @@ class AboutSection extends StatelessWidget {
           const ScrollReveal(
             slideBegin: Offset(-0.06, 0),
             child: SectionTitle(
-            title: AppStrings.aboutTitle,
-            subtitle: 'Passionate about building things that matter.',
+              title: AppStrings.aboutTitle,
+              subtitle: 'Passionate about building things that matter.',
             ),
           ),
           SizedBox(height: sectionGap),
@@ -56,73 +56,79 @@ class _BioCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PremiumHover(
-      child: GlassCard(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Container(
-                    width: 56,
-                    height: 56,
-                    decoration: BoxDecoration(
-                      gradient: AppColors.accentGradient,
-                      borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
-                    ),
-                    child: const Center(
-                      child: Text(
-                        'AS',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w800,
-                          fontSize: 18,
+          child: GlassCard(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Container(
+                      width: 56,
+                      height: 56,
+                      decoration: BoxDecoration(
+                        gradient: AppColors.accentGradient,
+                        borderRadius: BorderRadius.circular(
+                          AppSpacing.radiusMd,
+                        ),
+                      ),
+                      child: const Center(
+                        child: Text(
+                          'AS',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w800,
+                            fontSize: 18,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  const SizedBox(width: AppSpacing.md),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          AppStrings.name,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontSize: Responsive.isSmallPhone(context) ? 14 : 16,
-                            fontWeight: FontWeight.w700,
-                            color: AppColors.textPrimary,
+                    const SizedBox(width: AppSpacing.md),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            AppStrings.name,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontSize: Responsive.isSmallPhone(context)
+                                  ? 14
+                                  : 16,
+                              fontWeight: FontWeight.w700,
+                              color: AppColors.textPrimary,
+                            ),
                           ),
-                        ),
-                        const SizedBox(height: 2),
-                        Text(
-                          AppStrings.role,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontSize: Responsive.isSmallPhone(context) ? 12 : 13,
-                            color: AppColors.accentSecondary,
+                          const SizedBox(height: 2),
+                          Text(
+                            AppStrings.role,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontSize: Responsive.isSmallPhone(context)
+                                  ? 12
+                                  : 13,
+                              color: AppColors.accentSecondary,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: AppSpacing.xl),
-              Text(
-                AppStrings.aboutBio,
-                style: TextStyle(
-                  fontSize: 15,
-                  color: AppColors.textSecondary,
-                  height: 1.8,
+                  ],
                 ),
-              ),
-              const SizedBox(height: AppSpacing.xl),
-              const _SpecializationChips(),
-            ],
+                const SizedBox(height: AppSpacing.xl),
+                Text(
+                  AppStrings.aboutBio,
+                  style: TextStyle(
+                    fontSize: 15,
+                    color: AppColors.textSecondary,
+                    height: 1.8,
+                  ),
+                ),
+                const SizedBox(height: AppSpacing.xl),
+                const _SpecializationChips(),
+              ],
+            ),
           ),
-        ),
-    )
+        )
         .animate()
         .fadeIn(delay: 200.ms, duration: 600.ms)
         .slideY(begin: 0.1, end: 0);
@@ -177,9 +183,13 @@ class _HighlightsGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     final items = [
       _HighlightData('6 mo', 'Flutter Training', Icons.work_outline_rounded),
-      _HighlightData('2+', 'Projects Worked On', Icons.rocket_launch_outlined),
-      _HighlightData('5+', 'Tech Mastered', Icons.code_rounded),
-      _HighlightData('100%', 'Passion Driven', Icons.favorite_outline_rounded),
+      _HighlightData('3+', 'Real-World Projects', Icons.rocket_launch_outlined),
+      _HighlightData('3', 'Core Tech Focus', Icons.code_rounded),
+      _HighlightData(
+        'Open',
+        'Internship & Freelance',
+        Icons.handshake_outlined,
+      ),
     ];
 
     return GridView.count(
@@ -195,35 +205,39 @@ class _HighlightsGrid extends StatelessWidget {
           .map(
             (e) =>
                 PremiumHover(
-                  lift: 4,
-                  child: GlassCard(
-                      padding: const EdgeInsets.all(AppSpacing.md),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(e.value.icon, color: AppColors.accent, size: 22),
-                          const SizedBox(height: AppSpacing.sm),
-                          Text(
-                            e.value.value,
-                            style: TextStyle(
-                              fontSize: 22,
-                              fontWeight: FontWeight.w800,
-                              color: AppColors.textPrimary,
+                      lift: 4,
+                      child: GlassCard(
+                        padding: const EdgeInsets.all(AppSpacing.md),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              e.value.icon,
+                              color: AppColors.accent,
+                              size: 22,
                             ),
-                          ),
-                          const SizedBox(height: 2),
-                          Text(
-                            e.value.label,
-                            style: TextStyle(
-                              fontSize: 11,
-                              color: AppColors.textMuted,
+                            const SizedBox(height: AppSpacing.sm),
+                            Text(
+                              e.value.value,
+                              style: TextStyle(
+                                fontSize: 22,
+                                fontWeight: FontWeight.w800,
+                                color: AppColors.textPrimary,
+                              ),
                             ),
-                            textAlign: TextAlign.center,
-                          ),
-                        ],
+                            const SizedBox(height: 2),
+                            Text(
+                              e.value.label,
+                              style: TextStyle(
+                                fontSize: 11,
+                                color: AppColors.textMuted,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                )
+                    )
                     .animate()
                     .fadeIn(delay: (300 + e.key * 100).ms, duration: 500.ms)
                     .scale(
@@ -251,19 +265,19 @@ class _SectionWrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     return PremiumBackground(
       child: Container(
-      width: double.infinity,
-      padding: EdgeInsets.symmetric(
-        vertical: Responsive.sectionPadding(context),
-        horizontal: Responsive.horizontalPadding(context),
-      ),
-      child: Center(
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(
-            maxWidth: AppSpacing.maxContentWidth,
-          ),
-          child: child,
+        width: double.infinity,
+        padding: EdgeInsets.symmetric(
+          vertical: Responsive.sectionPadding(context),
+          horizontal: Responsive.horizontalPadding(context),
         ),
-      ),
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(
+              maxWidth: AppSpacing.maxContentWidth,
+            ),
+            child: child,
+          ),
+        ),
       ),
     );
   }

@@ -131,7 +131,9 @@ class FeaturedProject extends StatelessWidget {
       borderRadius: BorderRadius.circular(AppSpacing.radiusXl),
       child: Container(
         padding: EdgeInsets.all(
-          isSmallPhone ? AppSpacing.md : (isMobile ? AppSpacing.lg : AppSpacing.xl),
+          isSmallPhone
+              ? AppSpacing.md
+              : (isMobile ? AppSpacing.lg : AppSpacing.xl),
         ),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(AppSpacing.radiusXl),
@@ -160,7 +162,9 @@ class FeaturedProject extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _FeaturedCopy(project: project),
-                  SizedBox(height: isSmallPhone ? AppSpacing.lg : AppSpacing.xl),
+                  SizedBox(
+                    height: isSmallPhone ? AppSpacing.lg : AppSpacing.xl,
+                  ),
                   _DeviceMockup(project: project),
                 ],
               )
@@ -193,7 +197,7 @@ class _FeaturedCopy extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Featured Project',
+          'Featured Project Case Study',
           style: TextStyle(
             color: AppColors.accentSecondary,
             fontSize: 12,
@@ -214,15 +218,30 @@ class _FeaturedCopy extends StatelessWidget {
           ),
         ),
         const SizedBox(height: AppSpacing.md),
-        Text(
-          project.description,
-          style: TextStyle(
-            color: AppColors.textSecondary,
-            fontSize: 15,
-            height: 1.75,
-          ),
+        _CaseStudyRow(
+          label: 'Role',
+          value: project.role ?? 'Flutter Developer',
         ),
         const SizedBox(height: AppSpacing.lg),
+        _CaseStudyBlock(
+          label: 'Problem',
+          value: project.problem ?? project.description,
+        ),
+        const SizedBox(height: AppSpacing.md),
+        _CaseStudyBlock(
+          label: 'Solution',
+          value: project.solution ?? project.description,
+        ),
+        const SizedBox(height: AppSpacing.lg),
+        Text(
+          'Tech',
+          style: TextStyle(
+            color: AppColors.textPrimary,
+            fontSize: 13,
+            fontWeight: FontWeight.w800,
+          ),
+        ),
+        const SizedBox(height: AppSpacing.sm),
         Wrap(
           spacing: AppSpacing.sm,
           runSpacing: AppSpacing.sm,
@@ -252,6 +271,46 @@ class _FeaturedCopy extends StatelessWidget {
               )
               .toList(),
         ),
+        const SizedBox(height: AppSpacing.lg),
+        Text(
+          'Key Features',
+          style: TextStyle(
+            color: AppColors.textPrimary,
+            fontSize: 13,
+            fontWeight: FontWeight.w800,
+          ),
+        ),
+        const SizedBox(height: AppSpacing.sm),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: project.features
+              .map(
+                (feature) => Padding(
+                  padding: const EdgeInsets.only(bottom: AppSpacing.sm),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.check_circle_rounded,
+                        color: AppColors.accentSecondary,
+                        size: 17,
+                      ),
+                      const SizedBox(width: AppSpacing.sm),
+                      Expanded(
+                        child: Text(
+                          feature,
+                          style: TextStyle(
+                            color: AppColors.textSecondary,
+                            fontSize: 14,
+                            height: 1.45,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              )
+              .toList(),
+        ),
         const SizedBox(height: AppSpacing.xl),
         Wrap(
           spacing: AppSpacing.md,
@@ -263,12 +322,87 @@ class _FeaturedCopy extends StatelessWidget {
               onTap: () => _launch(project.githubUrl),
             ),
             PrimaryButton(
-              label: 'View Project',
+              label: 'Live Demo',
               icon: Icons.arrow_outward_rounded,
               outlined: true,
-              onTap: () => _launch(project.githubUrl),
+              onTap: () => _launch(project.liveUrl ?? project.githubUrl),
             ),
           ],
+        ),
+      ],
+    );
+  }
+}
+
+class _CaseStudyRow extends StatelessWidget {
+  final String label;
+  final String value;
+
+  const _CaseStudyRow({required this.label, required this.value});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 9),
+      decoration: BoxDecoration(
+        color: AppColors.accentSecondary.withValues(alpha: 0.08),
+        borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
+        border: Border.all(
+          color: AppColors.accentSecondary.withValues(alpha: 0.2),
+        ),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            '$label: ',
+            style: TextStyle(
+              color: AppColors.accentSecondary,
+              fontSize: 13,
+              fontWeight: FontWeight.w800,
+            ),
+          ),
+          Text(
+            value,
+            style: TextStyle(
+              color: AppColors.textPrimary,
+              fontSize: 13,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _CaseStudyBlock extends StatelessWidget {
+  final String label;
+  final String value;
+
+  const _CaseStudyBlock({required this.label, required this.value});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: TextStyle(
+            color: AppColors.textPrimary,
+            fontSize: 13,
+            fontWeight: FontWeight.w800,
+          ),
+        ),
+        const SizedBox(height: AppSpacing.xs),
+        Text(
+          value,
+          style: TextStyle(
+            color: AppColors.textSecondary,
+            fontSize: 15,
+            height: 1.65,
+          ),
         ),
       ],
     );
